@@ -1,0 +1,23 @@
+
+@media all {
+	.h-wrapper {
+		background: rgba(0,0,0,.15);
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 1;
+	}
+	.h-container {
+		padding: 10px 0;
+		height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+	.h-title {
+		font-style: italic;
+		font-weight: bold;
+		color: navajowhite;
+	}
+}

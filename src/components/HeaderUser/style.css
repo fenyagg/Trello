@@ -1,0 +1,21 @@
+@media all {
+	.header-user {
+		position: absolute;
+		right: 0;
+		display: flex;
+		align-items: center;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+	}
+	.header-user__avatar-container {
+
+	}
+	.header-user__avatar {
+		width: 35px;
+		height: 35px;
+		background-position: center;
+		background-size: cover;
+		border-radius: 50%;
+	}
+}

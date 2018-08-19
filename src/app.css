@@ -1,0 +1,31 @@
+
+@media all {
+	.trello {
+		background-color: #0079bf;
+	}
+	.page-container {
+		background-color: #fff;
+	}
+	.main-container {
+		height: 100vh;
+		padding: 60px 20px 20px;
+	}
+	.columns-list {
+		display: flex;
+		align-items: flex-start;
+		margin: -10px;
+	}
+	.add-column-link {
+		padding: 7px 10px;
+		color: rgba(255, 255, 255, 0.7);
+		background-color: rgba(0,0,0,.15);
+		text-decoration: none;
+		margin: 10px;
+		transition: .3s ease;
+	}
+	.add-column-link:hover {
+		color: rgba(255, 255, 255, 0.7);
+		background: rgba(0,0,0,.3);
+		text-decoration: none;
+	}
+}

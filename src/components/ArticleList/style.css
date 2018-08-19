@@ -1,0 +1,7 @@
+
+.article-list__li {
+	list-style-type: none;
+}
+.article-list__li + .article-list__li {
+	margin-top: 20px;
+}

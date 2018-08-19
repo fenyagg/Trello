@@ -1,0 +1,13 @@
+
+@media all {
+	.card {
+		padding: 10px;
+		cursor: pointer;
+	}
+	.card + .card {
+		margin-top: 10px;
+	}
+	.card-title {
+		margin: 0;
+	}
+}
