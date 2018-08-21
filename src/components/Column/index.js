@@ -7,20 +7,31 @@ class Columns extends Component {
 
 	state = {
 		isDragging: false,
-		isDraggingOver: false
+		isDraggingOver: false,
+		draggingCardId: false
 	};
 
 	headerColumnHandler = event => {
 		console.log(event);
 	};
-
-
+	
+	onDragEnter = (e, cardId, cardRef) => {
+		let cardOffset = {
+			top: cardRef.current.offsetTop,
+			bot: cardRef.current.offsetTop + cardRef.current.offsetHeight,
+		};
+		let cardMiddleOffset = cardRef.current.offsetTop + (cardRef.current.offsetHeight/2);
+		
+		console.log(cardId);
+		console.log(e.pageY > cardMiddleOffset ? 'Больше половины': "Меньше половины");
+	};
 
 	render(){
-
 		const {column} = this.props;
 		const cardsList = column.cards.map(card => {
 			return <Card
+				onCardDragStart={this.onDragEnter}
+				onDragEnter={this.onDragEnter}
 				card={card}
 				key={card.id}/>
 		});

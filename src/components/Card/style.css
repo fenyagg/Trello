@@ -1,8 +1,18 @@
 
 @media all {
+	.card-container {
+		padding: 5px 0;
+	}
+
 	.card {
 		padding: 10px;
 		cursor: pointer;
+	}
+	.card-inner {
+
+	}
+	.card-container._dragging .card {
+		opacity: .8;
 	}
 	.card + .card {
 		margin-top: 10px;
