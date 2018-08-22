@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 import './style.css'
 
-class Cards extends Component {
+class Cards extends React.Component {
 
 	constructor(props){
 		super(props)
@@ -21,10 +21,11 @@ class Cards extends Component {
 		this.props.onCardDragStart(cardIndex);
 	};
 
-	onDragEnd = (id, e) => {
+	onDrop = (id, e) => {
 		this.setState({
 			isDragging: false
 		});
+		this.props.onCardDrop();
 	};
 	
 	render(){
@@ -36,14 +37,13 @@ class Cards extends Component {
 		return (
 			<article
 				className={cardClass.join(' ')}
-				onDrop={e => this.onDragEnd(card.id, e)}
 				ref={this.cardRef}
 				onDragEnter={e => {onDragEnter( e, this.props.cardIndex, this.cardRef)}}
 				onDragLeave={() => this.setState({isDraggingOver: false})}
 			>
 				<div className="card"
 				     onDragStart={e => this.onDragStart(this.state.cardIndex, e)}
-				     onDragEnd = {e => this.onDragEnd()}
+				     onDragEnd = {this.onDrop}
 				     draggable="true"
 				>
 					<div className="card-title">{card.title}</div>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 //data
 import columns from './data/columns'
@@ -8,22 +8,56 @@ import './app.css'
 //components
 import Header from './layouts/header/index'
 import Column from './components/Column'
+import CardDetail from './components/CardDetail'
 
 
-class App extends Component {
-	/*constructor(props) {
+class App extends React.Component {
+	constructor(props) {
 		super(props);
-	}*/
+		
+		this.state = {
+			openCardColumnIndex: -1,
+			openCardIndex: -1,
+			cardPopup: false,
+		}
+	}
+	
+	openCard = (columnIndex, cardIndex ) => {
+		this.setState({
+			openCardColumnIndex: columnIndex,
+			openCardIndex: cardIndex,
+			cardPopup: true,
+		});
+	};
+	
+	closeCard = () => {
+		this.setState({
+			openCardColumnIndex: -1,
+			openCardIndex: -1,
+			cardPopup: false,
+		});
+	};
 
 	render () {
-		const renderColumns = columns.map(column => {
-			return 	<Column column={column} key={column.id} />
+		const renderColumns = columns.map((column, index) => {
+			return 	<Column
+				column={column}
+				key={column.id}
+				index={index}
+				openCard={this.openCard} />
 		});
 
 		return (
 			<div className="trello">
 				<Header />
 				<div className="main-container">
+					
+					{this.state.cardPopup ? (
+						<CardDetail
+							closeCard={this.closeCard}
+							card={columns[this.state.openCardColumnIndex][this.state.openCardIndex] || {}} />
+					) : ''}
+					
 					<div className="columns-list">
 						{renderColumns}
 

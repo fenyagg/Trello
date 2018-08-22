@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Card from '../Card'
 
 import './style.css'
 
-class Columns extends Component {
+class Columns extends React.Component {
 	
 	
 	constructor(props) {
@@ -12,14 +12,13 @@ class Columns extends Component {
 		const {column} = props;
 		
 		this.state = {
+			columnIndex: props.index,
 			isDragging: false,
 			isDraggingOver: false,
 			draggingCardIndex: false,
 			column: column
 		};
 	}
-	
-	
 	
 	headerColumnHandler = event => {
 		console.log(event);
@@ -33,27 +32,22 @@ class Columns extends Component {
 	
 	// @todo move fn to app
 	changeCardPosition = (draggingCardIndex, newIndex) => {
-		if (!draggingCardIndex || draggingCardIndex === newIndex) return true;
+		if (typeof draggingCardIndex === 'undefined' || draggingCardIndex === newIndex) return true;
 		
 		let changedColumn = this.state.column;
-		let newIndexWithDelete = newIndex-1 < 0 ? 0 : newIndex-1;
 		
 		// delete dragging element
 		const draggingCard = changedColumn.cards.splice(draggingCardIndex, 1)[0];
 		// add in new positon
 		changedColumn.cards.splice(newIndex, 0, draggingCard);
-				
+		
 		this.setState({
+			draggingCardIndex: newIndex,
 			column: changedColumn
 		});
 	};
 	
 	onDragEnter = (e, overCardIndex, cardRef) => {
-		let cardOffset = {
-			top: cardRef.current.offsetTop,
-			bot: cardRef.current.offsetTop + cardRef.current.offsetHeight,
-		};
-	
 		let cardMiddleOffset = cardRef.current.offsetTop + (cardRef.current.offsetHeight/2);
 		
 		if (this.state.draggingCardIndex === overCardIndex) return true;
@@ -66,12 +60,19 @@ class Columns extends Component {
 	
 		this.changeCardPosition(this.state.draggingCardIndex, newIndex);
 	};
+	
+	onCardDrop = () => {
+		this.setState({
+			draggingCardIndex: false
+		});
+	};
 
 	render(){
-		
+		const {openCard} = this.props;
 		const cardsList = this.state.column.cards.map((card,index) => {
 			return <Card
 				onCardDragStart={this.onCardDragStart.bind(this, index )}
+				onCardDrop = {this.onCardDrop}
 				onDragEnter={this.onDragEnter}
 				card={card}
 				cardIndex = {index}
@@ -91,10 +92,10 @@ class Columns extends Component {
 					</div>
 
 				</div>
-				<a href="{javascript:void(0)}"
+				<a href="javascript:void(0)"
+				   onClick={openCard.bind(this, this.state.columnIndex , -1 )}
 				   className="add-task-link">+ Добавить еще 1 карточку</a>
 			</div>
-
 	);
 	}
 }

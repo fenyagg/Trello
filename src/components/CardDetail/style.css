@@ -1,0 +1,26 @@
+
+.popup-shadow {
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	left: 0;
+	top: 0;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.card-detail {
+	width: 300px;
+	max-width: calc(100% - 30px);
+	position: relative;
+	margin: 15px;
+	max-height: calc(100% - 30px);
+	min-width: 30px;
+	min-height: 30px;
+	background-color: #fff;
+	padding: 20px;
+	box-shadow: 0 0 10px;
+	border-radius: 3px;
+}
