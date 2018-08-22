@@ -9,15 +9,16 @@ class Cards extends Component {
 		
 		this.state = {
 			isDragging: false,
-			
+			cardIndex: props.cardIndex
 		};
 		this.cardRef = React.createRef();
 	}
 	
-	onDragStart = event => {
+	onDragStart = cardIndex => {
 		this.setState({
 			isDragging: true
 		});
+		this.props.onCardDragStart(cardIndex);
 	};
 
 	onDragEnd = (id, e) => {
@@ -26,11 +27,6 @@ class Cards extends Component {
 		});
 	};
 	
-	onDragEnter = (id, e) => {
-		console.log(id);
-		console.log(e);
-	};
-
 	render(){
 		const {card, onDragEnter} = this.props;
 		const cardClass = ['card-container'];
@@ -42,12 +38,12 @@ class Cards extends Component {
 				className={cardClass.join(' ')}
 				onDrop={e => this.onDragEnd(card.id, e)}
 				ref={this.cardRef}
-				onDragEnter={e => {onDragEnter( e, card.id, this.cardRef)}}
+				onDragEnter={e => {onDragEnter( e, this.props.cardIndex, this.cardRef)}}
 				onDragLeave={() => this.setState({isDraggingOver: false})}
 			>
 				<div className="card"
-				     onDragStart={e => this.onDragStart(card.id, e)}
-				     onDragEnd = {e => this.onDragEnd(card.id, e)}
+				     onDragStart={e => this.onDragStart(this.state.cardIndex, e)}
+				     onDragEnd = {e => this.onDragEnd()}
 				     draggable="true"
 				>
 					<div className="card-title">{card.title}</div>
