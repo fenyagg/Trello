@@ -19,6 +19,7 @@ class App extends React.Component {
 			openCardColumnIndex: -1,
 			openCardIndex: -1,
 			cardPopup: false,
+			columns: columns
 		}
 	}
 	
@@ -29,7 +30,6 @@ class App extends React.Component {
 			cardPopup: true,
 		});
 	};
-	
 	closeCard = () => {
 		this.setState({
 			openCardColumnIndex: -1,
@@ -37,9 +37,14 @@ class App extends React.Component {
 			cardPopup: false,
 		});
 	};
+	saveCard = card => {
+		if (this.state.openCardColumnIndex > -1) {
+			this.state.columns[this.state.openCardColumnIndex].cards.push(card);
+		}
+	};
 
 	render () {
-		const renderColumns = columns.map((column, index) => {
+		const renderColumns = this.state.columns.map((column, index) => {
 			return 	<Column
 				column={column}
 				key={column.id}
@@ -54,6 +59,7 @@ class App extends React.Component {
 					
 					{this.state.cardPopup ? (
 						<CardDetail
+							saveCard = {this.saveCard}
 							closeCard={this.closeCard}
 							card={columns[this.state.openCardColumnIndex][this.state.openCardIndex] || {}} />
 					) : ''}
