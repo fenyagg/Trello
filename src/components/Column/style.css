@@ -9,6 +9,7 @@
 		max-height: 100%;
 		margin: 10px;
 		padding: 10px 10px 0;
+		flex-shrink: 0;
 	}
 	.column._dragging {
 		opacity: .8;

@@ -13,6 +13,7 @@
 	}
 	.card-container._dragging .card {
 		opacity: .8;
+		background-color: rgb(213, 236, 249);
 	}
 	.card + .card {
 		margin-top: 10px;
