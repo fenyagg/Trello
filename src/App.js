@@ -39,7 +39,13 @@ class App extends React.Component {
 	};
 	saveCard = card => {
 		if (this.state.openCardColumnIndex > -1) {
-			this.state.columns[this.state.openCardColumnIndex].cards.push(card);
+			let columns = this.state.columns;
+			if (card.id && this.state.openCardIndex > -1) {
+				columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] = card;
+				this.setState({'columns': columns});
+			} else {
+				this.state.columns[this.state.openCardColumnIndex].cards.push(card);
+			}
 		}
 	};
 
@@ -61,7 +67,7 @@ class App extends React.Component {
 						<CardDetail
 							saveCard = {this.saveCard}
 							closeCard={this.closeCard}
-							card={columns[this.state.openCardColumnIndex][this.state.openCardIndex] || {}} />
+							card={columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
 					) : ''}
 					
 					<div className="columns-list">

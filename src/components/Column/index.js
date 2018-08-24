@@ -23,13 +23,11 @@ class Columns extends React.Component {
 	headerColumnHandler = event => {
 		console.log(event);
 	};
-	
 	onCardDragStart = cardIndex => {
 		this.setState({
 			draggingCardIndex: cardIndex
 		});
 	};
-	
 	// @todo move fn to app
 	changeCardPosition = (draggingCardIndex, newIndex) => {
 		if (typeof draggingCardIndex === 'undefined' || draggingCardIndex === newIndex) return true;
@@ -46,7 +44,6 @@ class Columns extends React.Component {
 			column: changedColumn
 		});
 	};
-	
 	onDragEnter = (e, overCardIndex, cardRef) => {
 		let cardMiddleOffset = cardRef.current.offsetTop + (cardRef.current.offsetHeight/2);
 		
@@ -60,11 +57,14 @@ class Columns extends React.Component {
 	
 		this.changeCardPosition(this.state.draggingCardIndex, newIndex);
 	};
-	
 	onCardDrop = () => {
 		this.setState({
 			draggingCardIndex: false
 		});
+	};
+
+	onCardClick = cardIndex => {
+		this.props.openCard(this.state.columnIndex, cardIndex);
 	};
 
 	render(){
@@ -74,6 +74,7 @@ class Columns extends React.Component {
 				onCardDragStart={this.onCardDragStart.bind(this, index )}
 				onCardDrop = {this.onCardDrop}
 				onDragEnter={this.onDragEnter}
+				onCardClick={this.onCardClick.bind(this, index)}
 				card={card}
 				cardIndex = {index}
 				key={card.id}/>
@@ -90,9 +91,8 @@ class Columns extends React.Component {
 					<div className="card-list">
 						{cardsList}
 					</div>
-
 				</div>
-				<a href="javascript:void(0)"
+				<a href="#0"
 				   onClick={openCard.bind(this, this.state.columnIndex , -1 )}
 				   className="add-task-link">+ Добавить еще 1 карточку</a>
 			</div>

@@ -28,7 +28,7 @@ class Cards extends React.Component {
 	};
 	
 	render(){
-		const {card, onDragEnter} = this.props;
+		const {card, onDragEnter, onCardClick} = this.props;
 		const cardClass = ['card-container'];
 		
 		if (this.state.isDragging) cardClass.push('_dragging');
@@ -39,6 +39,7 @@ class Cards extends React.Component {
 				ref={this.cardRef}
 				onDragEnter={e => {onDragEnter( e, this.props.cardIndex, this.cardRef)}}
 				onDragLeave={() => this.setState({isDraggingOver: false})}
+				onClick={onCardClick}
 			>
 				<div className="card"
 				     onDragStart={e => this.onDragStart(this.state.cardIndex, e)}

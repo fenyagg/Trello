@@ -6,12 +6,11 @@ class CardDetail extends React.Component {
 	
 	constructor(props) {
 		super(props);
-		
+
 		this.state = Object.assign({
 			'title': 'Новая задача',
 			'id': 'task'+(new Date().getTime()),
 			'text': '',
-			'isNew': !props.card.id
 		}, props.card);
 		
 		this.titleRef = React.createRef();
@@ -21,7 +20,7 @@ class CardDetail extends React.Component {
 	
 	componentDidMount(prevProps, prevState) {
 		// autofocus on title in new item
-		if (!prevProps || !prevProps.card.id)
+		if (!this.props.card.id)
 			this.titleRef.current.focus()
 	}
 	
