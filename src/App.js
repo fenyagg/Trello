@@ -10,6 +10,8 @@ import Header from './layouts/header/index'
 import Column from './components/Column'
 import CardDetail from './components/CardDetail'
 
+import {clone} from 'lodash/lang';
+
 
 class App extends React.Component {
 	constructor(props) {
@@ -19,9 +21,76 @@ class App extends React.Component {
 			openCardColumnIndex: -1,
 			openCardIndex: -1,
 			cardPopup: false,
-			columns: columns
+			draggedCardColumnIndex: -1,
+			draggedCardIndex: -1,
+			columns: columns,
 		}
 	}
+	
+	cardDragAndDrop = {
+		onDragEnd: () => {
+			this.setState({
+				'draggedCardColumnIndex': -1,
+				'draggedCardIndex': -1,
+			});
+		},
+		/**
+		 * handler calculate and change position
+		 * @param e - event
+		 * @param cardRef - dragover card node
+		 * @param overColumnIndex - dragover card column
+		 * @param overCardIndex - dragover card index
+		 */
+		onDragEnter: (e, cardRef, overColumnIndex, overCardIndex) => {
+			if (this.state.draggedCardColumnIndex === -1 ||
+				this.state.draggedCardIndex === -1 ||
+					(this.state.draggedCardColumnIndex === overColumnIndex &&
+					this.state.draggedCardIndex === overCardIndex))  return true;
+			
+			
+			
+			// calc new position
+			let cardMiddleOffset = cardRef.current.offsetTop + (cardRef.current.offsetHeight/2);
+			
+			// more than half card height, pos set after card else before
+			let posDiff = e.pageY > cardMiddleOffset ? 1 : 0;
+			// calc new index
+			let newIndex = overCardIndex + posDiff;
+			
+			this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, newIndex);
+		},
+		onDragStart: (columnIndex, cardIndex) => {
+			this.setState({
+				'draggedCardColumnIndex': columnIndex,
+				'draggedCardIndex': cardIndex,
+			});
+		},
+		onDragEnterColumnHeader: (columnIndex) => {
+			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, 0);
+		},
+		changeCardPosition(newColumn, newIndex){
+			if (this.state.draggedCardColumnIndex === newColumn &&
+				this.state.draggedCardIndex === newIndex
+			) return;
+			
+			let cloneColumns = clone(this.state.columns);
+			
+			newIndex = newIndex > cloneColumns[newColumn]['cards'].length-1 ? cloneColumns[newColumn]['cards'].length-1 : newIndex;
+			newIndex = newIndex < 0 ? 0 : newIndex;
+			
+			// cut dragged card
+			let draggedCard = cloneColumns[this.state.draggedCardColumnIndex]['cards'].splice(this.state.draggedCardIndex, 1)[0];
+			
+			// put in new column
+			cloneColumns[newColumn]['cards'].splice(newIndex, 0, draggedCard);
+			
+			this.setState({
+				'draggedCardColumnIndex': newColumn,
+				'draggedCardIndex': newIndex,
+				'columns': cloneColumns
+			});
+		}
+	};
 	
 	openCard = (columnIndex, cardIndex ) => {
 		this.setState({
@@ -74,6 +143,9 @@ class App extends React.Component {
 				column={column}
 				key={column.id}
 				index={index}
+				cardDragAndDrop={this.cardDragAndDrop}
+				draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
+				draggedCardIndex = {this.state.draggedCardIndex}
 				openCard={this.openCard} />
 		});
 
@@ -86,7 +158,7 @@ class App extends React.Component {
 						<CardDetail
 							saveCard = {this.saveCard}
 							closeCard={this.closeCard}
-							card={columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
+							card={this.state.columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
 					) : ''}
 					
 					<div className="columns-list">
