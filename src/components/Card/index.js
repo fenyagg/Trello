@@ -20,7 +20,7 @@ class Cards extends React.Component {
 		});
 		this.props.onCardDragStart(cardIndex);
 	};
-	onDrop = (id, e) => {
+	onDrop = () => {
 		this.setState({
 			isDragging: false
 		});

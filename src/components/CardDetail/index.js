@@ -9,7 +9,7 @@ class CardDetail extends React.Component {
 
 		this.state = Object.assign({
 			'title': 'Новая задача',
-			'id': 'task'+(new Date().getTime()),
+			'id': 'card-'+(new Date().getTime()),
 			'text': '',
 		}, props.card);
 		

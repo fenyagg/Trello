@@ -103,7 +103,7 @@ class Columns extends React.Component {
 					</div>
 				</div>
 				<a href="#0"
-				   onClick={openCard.bind(this, this.state.columnIndex , -1 )}
+				   onClick={e => {e.preventDefault(); openCard(this.state.columnIndex , -1 )}}
 				   className="add-task-link">+ Добавить еще 1 карточку</a>
 			</div>
 	);

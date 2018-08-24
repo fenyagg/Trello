@@ -40,13 +40,32 @@ class App extends React.Component {
 	saveCard = card => {
 		if (this.state.openCardColumnIndex > -1) {
 			let columns = this.state.columns;
+			// change card data
 			if (card.id && this.state.openCardIndex > -1) {
 				columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] = card;
 				this.setState({'columns': columns});
-			} else {
+			} else { // new card
+				// todo set state
 				this.state.columns[this.state.openCardColumnIndex].cards.push(card);
 			}
 		}
+	};
+	
+	addColumn = event => {
+		event.preventDefault();
+		this.setState({
+			columns: [
+				...this.state.columns,
+				{
+					'name': 'Новая колонка',
+					'id': 'column-'+(new Date().getTime()),
+					'cards': []
+				}
+			]
+		});
+	};
+	deleteColumn = columnIndex => {
+	
 	};
 
 	render () {
@@ -73,7 +92,9 @@ class App extends React.Component {
 					<div className="columns-list">
 						{renderColumns}
 
-						<a href="#0" className="add-column-link">
+						<a href="#0"
+						   onClick={this.addColumn}
+						   className="add-column-link">
 							+ Добавить еще 1 колонку
 						</a>
 					</div>
