@@ -73,7 +73,7 @@ class App extends React.Component {
 					<div className="columns-list">
 						{renderColumns}
 
-						<a href="{javascript:void(0)}" className="add-column-link">
+						<a href="#0" className="add-column-link">
 							+ Добавить еще 1 колонку
 						</a>
 					</div>

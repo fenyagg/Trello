@@ -15,8 +15,7 @@
 		opacity: .8;
 	}
 	.column-header {
-		font-weight: 600;
-		margin-bottom: 10px;
+		margin-bottom: 5px;
 	}
 	.add-task-link {
 		margin: 0 -10px;
@@ -29,5 +28,15 @@
 
 	.card-list {
 
+	}
+	.column-title {
+		font-weight: 600;
+		width: 100%;
+		padding: 5px;
+		border: none;
+		background: transparent;
+	}
+	.column-title:focus {
+		background-color: #fff;
 	}
 }

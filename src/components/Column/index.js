@@ -19,10 +19,6 @@ class Columns extends React.Component {
 			column: column
 		};
 	}
-	
-	headerColumnHandler = event => {
-		console.log(event);
-	};
 	onCardDragStart = cardIndex => {
 		this.setState({
 			draggingCardIndex: cardIndex
@@ -67,6 +63,16 @@ class Columns extends React.Component {
 		this.props.openCard(this.state.columnIndex, cardIndex);
 	};
 
+	changeColumnName = event => {
+		let column = this.state.column;
+		column.name = event.target.value;
+		this.setState({column: column});
+	};
+	keyDownColumnName = event => {
+		if (['Enter', 'Escape'].includes(event.key))
+			event.target.blur();
+	};
+
 	render(){
 		const {openCard} = this.props;
 		const cardsList = this.state.column.cards.map((card,index) => {
@@ -84,8 +90,12 @@ class Columns extends React.Component {
 
 		return (
 			<div className={columnClass.join(' ')} >
-				<header onClick={this.headerColumnHandler} className="column-header">
-					{this.state.column.name}
+				<header className="column-header">
+					<input className="column-title"
+					       type="text"
+					       value={this.state.column.name}
+					       onKeyDown={this.keyDownColumnName}
+					       onChange={this.changeColumnName}/>
 				</header>
 				<div className="column-cards">
 					<div className="card-list">

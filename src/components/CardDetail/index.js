@@ -42,7 +42,8 @@ class CardDetail extends React.Component {
 		});
 	};
 	
-	saveCard = () => {
+	saveCard = (e) => {
+		e.preventDefault();
 		this.props.saveCard(this.state);
 		this.props.closeCard();
 	};
@@ -53,7 +54,7 @@ class CardDetail extends React.Component {
 			<div className="popup-wrapper">
 				<div onClick={closeCard}
 				     className="popup-shadow"> </div>
-				<article className="card-detail">
+				<form onSubmit={this.saveCard} className="card-detail">
 					<button onClick={closeCard}
 							type="button"
 					        className="close card-detail__close"
@@ -62,6 +63,7 @@ class CardDetail extends React.Component {
 					</button>
 					<header className="card-detail__header">
 						<input
+							required="required"
 							placeholder="Название задачи"
 							ref={this.titleRef}
 							type="text"
@@ -76,13 +78,12 @@ class CardDetail extends React.Component {
 						value={this.state.text}> </textarea>
 					
 					<footer className="card-detail__footer">
-						<button onClick={this.saveCard}
-						        className="btn btn-primary"
-						        type='button'>
+						<button className="btn btn-primary"
+						        type='submit'>
 								Сохранить
 							</button>
 					</footer>
-				</article>
+				</form>
 			</div>
 		);
 	}
