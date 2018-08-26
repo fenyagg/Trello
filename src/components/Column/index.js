@@ -56,7 +56,7 @@ class Columns extends React.Component {
 		return (
 			<div className={columnClass.join(' ')} onDragEnter = {this.onDragEnter}>
 				<header
-					onDragEnter={cardDragAndDrop.onDragEnterColumnHeader.bind(this, this.state.columnIndex, 0)}
+					onDragEnter={cardDragAndDrop.onDragEnterColumn.bind(this, this.state.columnIndex, 0)}
 					className="column-header">
 					<input className="column-title"
 					       type="text"
@@ -69,7 +69,8 @@ class Columns extends React.Component {
 						{cardsList}
 					</div>
 				</main>
-				<footer className="column-footer">
+				<footer className="column-footer"
+				        onDragEnter={cardDragAndDrop.onDragEnterColumn.bind(this, this.state.columnIndex, this.state.column.cards.length)}>
 					<a href="#0"
 					   onClick={e => {e.preventDefault(); openCard(this.state.columnIndex , -1 )}}
 					   className="add-task-link">+ Добавить еще 1 карточку</a>

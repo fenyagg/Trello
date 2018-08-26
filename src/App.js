@@ -65,8 +65,8 @@ class App extends React.Component {
 				'draggedCardIndex': cardIndex,
 			});
 		},
-		onDragEnterColumnHeader: (columnIndex) => {
-			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, 0);
+		onDragEnterColumn: (columnIndex, position) => {
+			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, +position);
 		},
 		changeCardPosition(newColumn, newIndex){
 			if (this.state.draggedCardColumnIndex === newColumn &&
