@@ -78,7 +78,8 @@ class CardDetail extends React.Component {
 						value={this.state.text}> </textarea>
 					
 					<footer className="card-detail__footer">
-						<button className="btn btn-primary"
+						<button
+								className="btn btn-primary mr-2"
 						        type='submit'>
 								Сохранить
 							</button>

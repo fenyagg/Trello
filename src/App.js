@@ -149,45 +149,61 @@ class App extends React.Component {
 		});
 	};
 
-	render () {
-		const renderColumns = this.state.columns.map((column, index) => {
-			return 	<Column
-				column={column}
-				key={column.id}
-				index={index}
-				cardDragAndDrop={this.cardDragAndDrop}
-				draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
-				draggedCardIndex = {this.state.draggedCardIndex}
-				openCard={this.openCard} />
-		});
+	onDeleteDrop = () => {
+		if (this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1) {
+			let cloneColumns = clone(this.state.columns);
+			cloneColumns[this.state.draggedCardColumnIndex]['cards'].splice(this.state.draggedCardIndex, 1);
 
-		return (
-			<div className="trello"
-			     onDragOver={this.onDragOver}
-			     onDrop = {this.onDrop} >
-				<Header />
-				<div className="main-container">
-					
-					{this.state.cardPopup ? (
-						<CardDetail
-							saveCard = {this.saveCard}
-							closeCard={this.closeCard}
-							card={this.state.columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
-					) : ''}
-					
-					<div className="columns-list">
-						{renderColumns}
+			this.setState({
+				'draggedCardColumnIndex': -1,
+				'draggedCardIndex': -1,
+				'columns': cloneColumns
+			});
+		}
+	};
 
-						<a href="#0"
-						   onClick={this.addColumn}
-						   className="add-column-link">
-							+ Добавить еще 1 колонку
-						</a>
-					</div>
-				</div>
+render () {
+const renderColumns = this.state.columns.map((column, index) => {
+	return 	<Column
+		column={column}
+		key={column.id}
+		index={index}
+		cardDragAndDrop={this.cardDragAndDrop}
+		draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
+		draggedCardIndex = {this.state.draggedCardIndex}
+		openCard={this.openCard} />
+});
+
+return (
+	<div className="trello"
+		 onDragOver={this.onDragOver}
+		 onDrop = {this.onDrop} >
+
+		<Header onDrop={this.onDeleteDrop}
+				isDraggedItems={this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1}/>
+
+		<div className="main-container">
+
+			{this.state.cardPopup ? (
+				<CardDetail
+					saveCard = {this.saveCard}
+					closeCard={this.closeCard}
+					card={this.state.columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
+			) : ''}
+
+			<div className="columns-list">
+				{renderColumns}
+
+				<a href="#0"
+				   onClick={this.addColumn}
+				   className="add-column-link">
+					+ Добавить еще 1 колонку
+				</a>
 			</div>
-		);
-	}
+		</div>
+	</div>
+);
+}
 }
 
 export default App

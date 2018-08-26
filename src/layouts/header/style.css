@@ -7,6 +7,32 @@
 		width: 100%;
 		z-index: 1;
 	}
+		.h-wrapper._delete-header {
+			background-color: red;
+		}
+		.h-wrapper._delete-header._dragging-over {
+			background-color: #da0000;
+		}
+
+	.h-delete-icon {
+		opacity: 0;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		width: 1em;
+		height: 1em;
+		font-size: 30px;
+		color: #000;
+	}
+		.h-wrapper._delete-header .h-delete-icon {
+			opacity: 1;
+		}
+	.h-wrapper._delete-header .container {
+		opacity: 0;
+	}
 	.h-container {
 		padding: 10px 0;
 		height: 44px;
