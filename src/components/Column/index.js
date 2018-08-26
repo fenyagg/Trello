@@ -32,6 +32,11 @@ class Columns extends React.Component {
 			event.target.blur();
 	};
 
+	// drag and drop cursor fix
+	onDragEnter = e => {
+		e.preventDefault();
+	};
+
 	render(){
 		const {openCard, cardDragAndDrop, draggedCardColumnIndex, draggedCardIndex} = this.props;
 		const cardsList = this.state.column.cards.map((card,index) => {
@@ -49,7 +54,7 @@ class Columns extends React.Component {
 		if (this.state.isDragging) columnClass.push('_dragging');
 
 		return (
-			<div className={columnClass.join(' ')} >
+			<div className={columnClass.join(' ')} onDragEnter = {this.onDragEnter}>
 				<header
 					onDragEnter={cardDragAndDrop.onDragEnterColumnHeader.bind(this, this.state.columnIndex, 0)}
 					className="column-header">

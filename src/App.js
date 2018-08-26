@@ -137,6 +137,18 @@ class App extends React.Component {
 	
 	};
 
+	// drop fix https://stackoverflow.com/questions/50230048/react-ondrop-is-not-firing
+	onDragOver = e => {
+		e.stopPropagation();
+		e.preventDefault();
+	};
+	onDrop = e => {
+		this.setState({
+			'draggedCardColumnIndex': -1,
+			'draggedCardIndex': -1,
+		});
+	};
+
 	render () {
 		const renderColumns = this.state.columns.map((column, index) => {
 			return 	<Column
@@ -150,7 +162,9 @@ class App extends React.Component {
 		});
 
 		return (
-			<div className="trello">
+			<div className="trello"
+			     onDragOver={this.onDragOver}
+			     onDrop = {this.onDrop} >
 				<Header />
 				<div className="main-container">
 					
