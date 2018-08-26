@@ -23,10 +23,57 @@ class App extends React.Component {
 			cardPopup: false,
 			draggedCardColumnIndex: -1,
 			draggedCardIndex: -1,
+			draggedColumn: -1,
 			columns: columns,
 		}
 	}
-	
+
+	columnDragAndDrop = {
+		onDragEnd: () => {
+			this.setState({
+				'columnIndex': -1,
+			});
+		},
+		onDragStart: (columnIndex) => {
+			this.setState({
+				'draggedColumn': columnIndex,
+			});
+		},
+		onDragOver: (e, columnRef, overColumnIndex) => {
+			if (this.state.draggedColumn === -1 ||
+				this.state.draggedColumn === overColumnIndex )  return true;
+
+			// calc new position
+			let cardMiddleOffset = columnRef.current.offsetLeft + (columnRef.current.offsetWidth/2);
+
+			// more than half card height, pos set after card else before
+			let posDiff = e.pageX > cardMiddleOffset ? 1 : 0;
+
+			// calc new index
+			let newIndex = overColumnIndex + posDiff;
+			newIndex = newIndex > this.state.columns.length-1 ? this.state.columns.length-1 : newIndex;
+			newIndex = newIndex < 0 ? 0 : newIndex;
+
+			if (newIndex === this.state.draggedColumn ) return true;
+
+			console.log(this.state.draggedColumn);
+			console.log(newIndex);
+
+			let cloneColumns = clone(this.state.columns);
+
+			// cut dragged column
+			let draggedColumn = cloneColumns.splice(this.state.draggedColumn, 1)[0];
+
+			// put column
+			cloneColumns.splice(newIndex, 0, draggedColumn);
+
+			/*this.setState({
+				'draggedColumn': newIndex,
+				'columns': cloneColumns
+			});*/
+		}
+	};
+
 	cardDragAndDrop = {
 		onDragEnd: () => {
 			this.setState({
@@ -69,8 +116,10 @@ class App extends React.Component {
 			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, +position);
 		},
 		changeCardPosition(newColumn, newIndex){
-			if (this.state.draggedCardColumnIndex === newColumn &&
-				this.state.draggedCardIndex === newIndex
+			if ( (this.state.draggedCardColumnIndex === -1 &&
+				this.state.draggedCardIndex === -1) ||
+				(this.state.draggedCardColumnIndex === newColumn &&
+				this.state.draggedCardIndex === newIndex)
 			) return;
 			
 			let cloneColumns = clone(this.state.columns);
@@ -169,6 +218,7 @@ const renderColumns = this.state.columns.map((column, index) => {
 		key={column.id}
 		index={index}
 		cardDragAndDrop={this.cardDragAndDrop}
+		columnDragAndDrop={this.columnDragAndDrop}
 		draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
 		draggedCardIndex = {this.state.draggedCardIndex}
 		openCard={this.openCard} />

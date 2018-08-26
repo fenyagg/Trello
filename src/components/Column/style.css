@@ -1,15 +1,17 @@
 
 @media all {
+	.column-wrapper {
+		width: 290px;
+		height: 100%;
+		padding: 10px;
+		flex-shrink: 0;
+	}
 	.column {
-		width: 270px;
 		background: #e2e4e6;
 		border-radius: 3px;
 		display: flex;
 		flex-direction: column;
-		max-height: 100%;
-		margin: 10px;
 		padding: 0;
-		flex-shrink: 0;
 	}
 	.column._dragging {
 		opacity: .8;
