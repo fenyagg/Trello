@@ -42,7 +42,9 @@ class Columns extends React.Component {
 			cardDragAndDrop,
 			draggedCardColumnIndex,
 			draggedCardIndex,
-			columnDragAndDrop
+			onDragEnter,
+			onDragStart,
+			onDragEnd
 		} = this.props;
 		const cardsList = this.state.column.cards.map((card,index) => {
 			return <Card
@@ -60,13 +62,14 @@ class Columns extends React.Component {
 
 		return (
 			<div className="column-wrapper"
-			     onDragOver={e => {columnDragAndDrop.onDragOver( e, this.columnRef, this.state.columnIndex)}}
+			     onDragEnter={onDragEnter}
 			>
 				<div
 					ref={this.columnRef}
 					className={columnClass.join(' ')}
 					onDragEnter = {this.onDragEnter}
-					onDragStart = {columnDragAndDrop.onDragStart.bind(this, this.state.columnIndex)}
+					onDragStart = {onDragStart}
+					onDragEnd = {onDragEnd}
 					draggable="true"
 				>
 					<header

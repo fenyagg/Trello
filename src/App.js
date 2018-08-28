@@ -31,7 +31,7 @@ class App extends React.Component {
 	columnDragAndDrop = {
 		onDragEnd: () => {
 			this.setState({
-				'columnIndex': -1,
+				'draggedColumn': -1,
 			});
 		},
 		onDragStart: (columnIndex) => {
@@ -39,25 +39,16 @@ class App extends React.Component {
 				'draggedColumn': columnIndex,
 			});
 		},
-		onDragOver: (e, columnRef, overColumnIndex) => {
+		onDragEnter: (overColumnIndex) => {
 			if (this.state.draggedColumn === -1 ||
 				this.state.draggedColumn === overColumnIndex )  return true;
 
-			// calc new position
-			let cardMiddleOffset = columnRef.current.offsetLeft + (columnRef.current.offsetWidth/2);
-
-			// more than half card height, pos set after card else before
-			let posDiff = e.pageX > cardMiddleOffset ? 1 : 0;
-
 			// calc new index
-			let newIndex = overColumnIndex + posDiff;
+			let newIndex = overColumnIndex; // + posDiff;
 			newIndex = newIndex > this.state.columns.length-1 ? this.state.columns.length-1 : newIndex;
 			newIndex = newIndex < 0 ? 0 : newIndex;
 
 			if (newIndex === this.state.draggedColumn ) return true;
-
-			console.log(this.state.draggedColumn);
-			console.log(newIndex);
 
 			let cloneColumns = clone(this.state.columns);
 
@@ -67,10 +58,10 @@ class App extends React.Component {
 			// put column
 			cloneColumns.splice(newIndex, 0, draggedColumn);
 
-			/*this.setState({
+			this.setState({
+				'columns': cloneColumns,
 				'draggedColumn': newIndex,
-				'columns': cloneColumns
-			});*/
+			});
 		}
 	};
 
@@ -209,6 +200,16 @@ class App extends React.Component {
 				'columns': cloneColumns
 			});
 		}
+
+		if (this.state.draggedColumn > -1) {
+			let cloneColumns = clone(this.state.columns);
+			cloneColumns.splice(this.state.draggedColumn, 1);
+
+			this.setState({
+				'draggedColumn': -1,
+				'columns': cloneColumns
+			});
+		}
 	};
 
 render () {
@@ -218,10 +219,14 @@ const renderColumns = this.state.columns.map((column, index) => {
 		key={column.id}
 		index={index}
 		cardDragAndDrop={this.cardDragAndDrop}
-		columnDragAndDrop={this.columnDragAndDrop}
 		draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
 		draggedCardIndex = {this.state.draggedCardIndex}
-		openCard={this.openCard} />
+		openCard={this.openCard}
+
+		onDragEnter={this.columnDragAndDrop.onDragEnter.bind(this, index)}
+		onDragStart={this.columnDragAndDrop.onDragStart.bind(this, index)}
+		onDragEnd={this.columnDragAndDrop.onDragEnd.bind(this, index)}
+	/>
 });
 
 return (
@@ -230,7 +235,7 @@ return (
 		 onDrop = {this.onDrop} >
 
 		<Header onDrop={this.onDeleteDrop}
-				isDraggedItems={this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1}/>
+				isDraggedItems={(this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1) || this.state.draggedColumn > -1}/>
 
 		<div className="main-container">
 
