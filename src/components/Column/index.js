@@ -35,6 +35,12 @@ class Columns extends React.Component {
 	onDragEnter = e => {
 		e.preventDefault();
 	};
+	
+	onDragStart = e => {
+		// dont fire on drag card
+		if (e.target.className === 'column')
+			this.props.onDragStart();
+	};
 
 	render(){
 		const {
@@ -43,14 +49,13 @@ class Columns extends React.Component {
 			draggedCardColumnIndex,
 			draggedCardIndex,
 			onDragEnter,
-			onDragStart,
 			onDragEnd
 		} = this.props;
 		const cardsList = this.state.column.cards.map((card,index) => {
 			return <Card
 				onCardDragStart={cardDragAndDrop.onDragStart.bind(this, this.state.columnIndex, index)}
 				onDragEnd = {cardDragAndDrop.onDragEnd}
-				onDragEnter={(event, cardRef) => cardDragAndDrop.onDragEnter(event, cardRef, this.state.columnIndex, index)}
+				onDragEnter={cardDragAndDrop.onDragEnter.bind(this, this.state.columnIndex, index)}
 				onCardClick={this.onCardClick.bind(this, index)}
 				isDraggable={draggedCardColumnIndex === this.state.columnIndex && draggedCardIndex === index}
 				card={card}
@@ -68,7 +73,7 @@ class Columns extends React.Component {
 					ref={this.columnRef}
 					className={columnClass.join(' ')}
 					onDragEnter = {this.onDragEnter}
-					onDragStart = {onDragStart}
+					onDragStart = {this.onDragStart}
 					onDragEnd = {onDragEnd}
 					draggable="true"
 				>

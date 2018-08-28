@@ -70,32 +70,17 @@ class App extends React.Component {
 			this.setState({
 				'draggedCardColumnIndex': -1,
 				'draggedCardIndex': -1,
+				'draggedColumn': -1
 			});
 		},
-		/**
-		 * handler calculate and change position
-		 * @param e - event
-		 * @param cardRef - dragover card node
-		 * @param overColumnIndex - dragover card column
-		 * @param overCardIndex - dragover card index
-		 */
-		onDragEnter: (e, cardRef, overColumnIndex, overCardIndex) => {
+		
+		onDragEnter: (overColumnIndex, overCardIndex) => {
 			if (this.state.draggedCardColumnIndex === -1 ||
 				this.state.draggedCardIndex === -1 ||
 					(this.state.draggedCardColumnIndex === overColumnIndex &&
 					this.state.draggedCardIndex === overCardIndex))  return true;
 			
-			
-			
-			// calc new position
-			let cardMiddleOffset = cardRef.current.offsetTop + (cardRef.current.offsetHeight/2);
-			
-			// more than half card height, pos set after card else before
-			let posDiff = e.pageY > cardMiddleOffset ? 1 : 0;
-			// calc new index
-			let newIndex = overCardIndex + posDiff;
-			
-			this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, newIndex);
+			this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, overCardIndex);
 		},
 		onDragStart: (columnIndex, cardIndex) => {
 			this.setState({
@@ -104,7 +89,7 @@ class App extends React.Component {
 			});
 		},
 		onDragEnterColumn: (columnIndex, position) => {
-			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, +position);
+			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, position);
 		},
 		changeCardPosition(newColumn, newIndex){
 			if ( (this.state.draggedCardColumnIndex === -1 &&
@@ -172,9 +157,6 @@ class App extends React.Component {
 				}
 			]
 		});
-	};
-	deleteColumn = columnIndex => {
-	
 	};
 
 	// drop fix https://stackoverflow.com/questions/50230048/react-ondrop-is-not-firing

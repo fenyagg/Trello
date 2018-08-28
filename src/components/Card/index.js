@@ -24,7 +24,7 @@ class Cards extends React.Component {
 			<article
 				className={cardClass.join(' ')}
 				ref={this.cardRef}
-				onDragEnter={e => {onDragEnter( e, this.cardRef)}}
+				onDragEnter={onDragEnter}
 				onDragLeave={() => this.setState({isDraggingOver: false})}
 				onClick={onCardClick}
 			>
