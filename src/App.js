@@ -25,6 +25,7 @@ class App extends React.Component {
 			draggedCardIndex: -1,
 			draggedColumn: -1,
 			columns: columns,
+			
 		}
 	}
 
@@ -88,7 +89,7 @@ class App extends React.Component {
 				'draggedCardIndex': cardIndex,
 			});
 		},
-		onDragEnterColumn: (columnIndex, position) => {
+		onEnterColumn: (columnIndex, position) => {
 			this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, position);
 		},
 		changeCardPosition(newColumn, newIndex){
@@ -200,14 +201,18 @@ const renderColumns = this.state.columns.map((column, index) => {
 		column={column}
 		key={column.id}
 		index={index}
-		cardDragAndDrop={this.cardDragAndDrop}
+		onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
+		onCardDragEnd = {this.cardDragAndDrop.onDragEnd.bind(this, index)}
+		onCardDragEnter = {this.cardDragAndDrop.onDragEnter.bind(this, index)}
+		onCardEnterColumn = {this.cardDragAndDrop.onEnterColumn.bind(this, index)}
+		
 		draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
 		draggedCardIndex = {this.state.draggedCardIndex}
-		openCard={this.openCard}
+		openCard = {this.openCard}
 
-		onDragEnter={this.columnDragAndDrop.onDragEnter.bind(this, index)}
-		onDragStart={this.columnDragAndDrop.onDragStart.bind(this, index)}
-		onDragEnd={this.columnDragAndDrop.onDragEnd.bind(this, index)}
+		onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
+		onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
+		onDragEnd = {this.columnDragAndDrop.onDragEnd.bind(this, index)}
 	/>
 });
 

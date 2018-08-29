@@ -10,7 +10,6 @@ class Columns extends React.Component {
 		const {column} = props;
 		
 		this.state = {
-			columnIndex: props.index,
 			isDragging: false,
 			column: column,
 		};
@@ -18,7 +17,7 @@ class Columns extends React.Component {
 	}
 	
 	onCardClick = cardIndex => {
-		this.props.openCard(this.state.columnIndex, cardIndex);
+		this.props.openCard(this.props.index, cardIndex);
 	};
 
 	changeColumnName = event => {
@@ -45,19 +44,25 @@ class Columns extends React.Component {
 	render(){
 		const {
 			openCard,
-			cardDragAndDrop,
+			onCardDragStart,
+			onCardDragEnd,
+			onCardEnterColumn,
+			onCardDragEnter,
+			index:columnIndex,
+			
 			draggedCardColumnIndex,
 			draggedCardIndex,
 			onDragEnter,
 			onDragEnd
 		} = this.props;
+		
 		const cardsList = this.state.column.cards.map((card,index) => {
 			return <Card
-				onCardDragStart={cardDragAndDrop.onDragStart.bind(this, this.state.columnIndex, index)}
-				onDragEnd = {cardDragAndDrop.onDragEnd}
-				onDragEnter={cardDragAndDrop.onDragEnter.bind(this, this.state.columnIndex, index)}
-				onCardClick={this.onCardClick.bind(this, index)}
-				isDraggable={draggedCardColumnIndex === this.state.columnIndex && draggedCardIndex === index}
+				onCardDragStart = {onCardDragStart.bind(this, index)}
+				onDragEnd = {onCardDragEnd.bind(this, index)}
+				onDragEnter = {onCardDragEnter.bind(this, index)}
+				onCardClick = {this.onCardClick.bind(this, columnIndex, index)}
+				isDraggable = {draggedCardColumnIndex === columnIndex && draggedCardIndex === index}
 				card={card}
 				cardIndex = {index}
 				key={card.id}/>
@@ -78,7 +83,7 @@ class Columns extends React.Component {
 					draggable="true"
 				>
 					<header
-						onDragEnter={cardDragAndDrop.onDragEnterColumn.bind(this, this.state.columnIndex, 0)}
+						onDragEnter={onCardEnterColumn.bind(this, columnIndex, 0)}
 						className="column-header">
 						<input className="column-title"
 						       type="text"
@@ -92,9 +97,9 @@ class Columns extends React.Component {
 						</div>
 					</main>
 					<footer className="column-footer"
-					        onDragEnter={cardDragAndDrop.onDragEnterColumn.bind(this, this.state.columnIndex, this.state.column.cards.length)}>
+					        onDragEnter={onCardEnterColumn.bind(this, columnIndex, this.state.column.cards.length)}>
 						<a href="#0"
-						   onClick={e => {e.preventDefault(); openCard(this.state.columnIndex , -1 )}}
+						   onClick={e => {e.preventDefault(); openCard(columnIndex , -1 )}}
 						   className="add-task-link">+ Добавить еще 1 карточку</a>
 					</footer>
 
