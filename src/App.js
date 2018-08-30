@@ -236,7 +236,9 @@ class App extends React.Component {
 				 onDragOver={this.onDragOver}
 				 onDrop = {this.onDrop} >
 
-				<Header onExit={this.onExit}
+				<Header
+						isAuthorized={this.state.isAuthorized}
+						onExit={this.onExit}
 						onDrop={this.onDeleteDrop}
 						isDraggedItems={(this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1) || this.state.draggedColumn > -1}/>
 

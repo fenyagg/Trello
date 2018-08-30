@@ -14,7 +14,7 @@ class HeaderUser extends Component {
 			<div className="header-user">
 				<a href="#0" className="header-user__avatar" style={{'backgroundImage': 'url("/img/stalone.jpg")'}} title={this.user.name+' '+this.user.secondName}> </a>
 
-				<a href="#0" className="header-user__exit" onClick={onExit}>Выход</a>
+				<a href="#0" className="header-user__exit" onClick={e => {e.preventDefault(); onExit()}}>Выход</a>
 			</div>
 		)
 	}

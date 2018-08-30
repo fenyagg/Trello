@@ -20,7 +20,7 @@ class Article extends Component {
 	};
 
 	render(){
-		const {isDraggedItems, onExit} = this.props;
+		const {isDraggedItems, onExit, isAuthorized} = this.props;
 
 		let hWrapperClass = ['h-wrapper'];
 		if (isDraggedItems) hWrapperClass.push('_delete-header');
@@ -38,7 +38,9 @@ class Article extends Component {
 				<div className='container'>
 					<div className="h-container">
 						<div className="h-title">Trello</div>
-						<HeaderUser onExit={onExit}/>
+						
+						{isAuthorized ? <HeaderUser onExit={onExit}/> : null}
+						
 					</div>
 				</div>
 			</header>
