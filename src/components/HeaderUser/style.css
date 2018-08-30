@@ -18,4 +18,12 @@
 		background-size: cover;
 		border-radius: 50%;
 	}
+	.header-user__exit {
+		color: #fff;
+		margin-left: 10px;
+	}
+	.header-user__exit:hover {
+		color: #fff;
+		text-decoration: underline;
+	}
 }

@@ -9,6 +9,7 @@ import './app.css'
 import Header from './layouts/header/index'
 import Column from './components/Column'
 import CardDetail from './components/CardDetail'
+import AuthTabs from './components/AuthTabs'
 
 import {clone} from 'lodash/lang';
 
@@ -25,7 +26,10 @@ class App extends React.Component {
 			draggedCardIndex: -1,
 			draggedColumn: -1,
 			columns: columns,
-			
+			isAuthorized: false,
+			user: {
+
+			}
 		}
 	}
 
@@ -195,57 +199,73 @@ class App extends React.Component {
 		}
 	};
 
-render () {
-const renderColumns = this.state.columns.map((column, index) => {
-	return 	<Column
-		column={column}
-		key={column.id}
-		index={index}
-		onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
-		onCardDragEnd = {this.cardDragAndDrop.onDragEnd.bind(this, index)}
-		onCardDragEnter = {this.cardDragAndDrop.onDragEnter.bind(this, index)}
-		onCardEnterColumn = {this.cardDragAndDrop.onEnterColumn.bind(this, index)}
-		
-		draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
-		draggedCardIndex = {this.state.draggedCardIndex}
-		openCard = {this.openCard}
+	onAuth = formData => {
+		this.setState({
+			isAuthorized: true
+		});
+	};
+	onExit = () => {
+		this.setState({
+			isAuthorized: false
+		});
+	};
 
-		onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
-		onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
-		onDragEnd = {this.columnDragAndDrop.onDragEnd.bind(this, index)}
-	/>
-});
+	render () {
+		const renderColumns = this.state.columns.map((column, index) => {
+			return 	<Column
+				column={column}
+				key={column.id}
+				index={index}
+				onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
+				onCardDragEnd = {this.cardDragAndDrop.onDragEnd.bind(this, index)}
+				onCardDragEnter = {this.cardDragAndDrop.onDragEnter.bind(this, index)}
+				onCardEnterColumn = {this.cardDragAndDrop.onEnterColumn.bind(this, index)}
 
-return (
-	<div className="trello"
-		 onDragOver={this.onDragOver}
-		 onDrop = {this.onDrop} >
+				draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
+				draggedCardIndex = {this.state.draggedCardIndex}
+				openCard = {this.openCard}
 
-		<Header onDrop={this.onDeleteDrop}
-				isDraggedItems={(this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1) || this.state.draggedColumn > -1}/>
+				onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
+				onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
+				onDragEnd = {this.columnDragAndDrop.onDragEnd.bind(this, index)}
+			/>
+		});
 
-		<div className="main-container">
+		return (
+			<div className="trello"
+				 onDragOver={this.onDragOver}
+				 onDrop = {this.onDrop} >
 
-			{this.state.cardPopup ? (
-				<CardDetail
-					saveCard = {this.saveCard}
-					closeCard={this.closeCard}
-					card={this.state.columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
-			) : ''}
+				<Header onExit={this.onExit}
+						onDrop={this.onDeleteDrop}
+						isDraggedItems={(this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1) || this.state.draggedColumn > -1}/>
 
-			<div className="columns-list">
-				{renderColumns}
+				<div className="main-container">
 
-				<a href="#0"
-				   onClick={this.addColumn}
-				   className="add-column-link">
-					+ Добавить еще 1 колонку
-				</a>
+					{this.state.cardPopup ? (
+						<CardDetail
+							saveCard = {this.saveCard}
+							closeCard={this.closeCard}
+							card={this.state.columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
+					) : ''}
+
+					{!this.state.isAuthorized ?
+						<AuthTabs onAuth={this.onAuth} /> :
+						(<div className="columns-list">
+							{renderColumns}
+
+							<a href="#0"
+							   onClick={this.addColumn}
+							   className="add-column-link">
+								+ Добавить еще 1 колонку
+							</a>
+						</div>)
+					}
+
+				</div>
 			</div>
-		</div>
-	</div>
-);
-}
+		);
+	}
 }
 
 export default App
