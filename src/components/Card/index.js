@@ -10,7 +10,6 @@ class Cards extends React.Component {
 		this.state = {
 			cardIndex: props.cardIndex
 		};
-		this.cardRef = React.createRef();
 	}
 	
 	
@@ -23,7 +22,6 @@ class Cards extends React.Component {
 		return (
 			<article
 				className={cardClass.join(' ')}
-				ref={this.cardRef}
 				onDragEnter={onDragEnter}
 				onClick={onCardClick}
 			>

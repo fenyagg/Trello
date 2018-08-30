@@ -13,7 +13,6 @@ class Columns extends React.Component {
 			isDragging: false,
 			column: column,
 		};
-		this.columnRef = React.createRef();
 	}
 	
 	onCardClick = cardIndex => {
@@ -75,7 +74,6 @@ class Columns extends React.Component {
 			     onDragEnter={onDragEnter}
 			>
 				<div
-					ref={this.columnRef}
 					className={columnClass.join(' ')}
 					onDragEnter = {this.onDragEnter}
 					onDragStart = {this.onDragStart}

@@ -27,6 +27,7 @@ class App extends React.Component {
 			draggedColumn: -1,
 			columns: columns,
 			isAuthorized: false,
+			// todo save user
 			user: {
 
 			}
