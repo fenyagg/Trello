@@ -3,7 +3,6 @@ import React from 'react'
 //data
 import columns from './data/columns'
 //css
-import 'bootstrap/dist/css/bootstrap.css'
 import './app.css'
 //components
 import Header from './layouts/header/index'
