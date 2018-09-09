@@ -1,5 +1,14 @@
 import React from 'react'
 import {render} from 'react-dom'
 import App from './App'
+import {Provider} from 'react-redux';
 
-render(<App/>, document.getElementById('root'))
+import initialStore from './utils/store';
+//import store from './store';
+
+render(
+	<Provider store={initialStore()}>
+		<App/>
+	</Provider>,
+	document.getElementById('root')
+);
