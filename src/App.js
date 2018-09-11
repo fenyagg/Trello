@@ -1,4 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { startTaskLoading } from './actions/columns';
 
 //data
 import columns from './data/columns'
@@ -32,6 +35,10 @@ class App extends React.Component {
 			}
 		}
 	}
+	
+	static contextTypes = {
+		store: PropTypes.object
+	};
 
 	columnDragAndDrop = {
 		onDragEnd: () => {
@@ -270,4 +277,12 @@ class App extends React.Component {
 	}
 }
 
-export default App
+const mapStateToProps = () => {
+	return {};
+};
+
+const mapDispatchTOProps = () => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchTOProps)(App)

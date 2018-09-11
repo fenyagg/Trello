@@ -1,5 +1,6 @@
 import {START_TASK_LOADING, SUCCESS_TASK_LOADING} from './../actions/columns'
 import update from 'react-addons-update';
+import {ERROR_TASK_LOADING} from "../actions/columns";
 
 const initialState = {
 
@@ -11,6 +12,14 @@ export default function columns( store = initialState, action) {
 		case START_TASK_LOADING:
 			return update(store, {
 				isLoading: { $set: true },
+			});
+		case SUCCESS_TASK_LOADING:
+			return update(store, {
+				isLoading: { $set: false },
+			});
+		case ERROR_TASK_LOADING:
+			return update(store, {
+				isLoading: { $set: false },
 			});
 		default:
 			return store;
