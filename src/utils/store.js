@@ -2,12 +2,15 @@
 import { createStore, applyMiddleware, compose} from 'redux';
 import initReducers from './../reducers';
 import middlewares from './../middlewares';
-import columns from './../data/columns';
+import initialState from './../data/initialState';
 
 function iniStore( additionalMiddlewares = [] ) {
 	return createStore(
 		initReducers,
-		{columns: columns},
+		{
+			columns: initialState.columns,
+			cardPopup: initialState.cardPopup,
+		},
 		compose(
 			applyMiddleware(...additionalMiddlewares, ...middlewares),
 			window.__REDUX_DEVTOOLS_EXTENSION__()

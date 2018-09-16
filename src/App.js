@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { startTaskLoading } from './actions/columns';
+import {openCardPopup, closeCardPopup, saveCardPopup} from './actions/cardPopup';
 
 //data
 import columns from './data/columns'
@@ -218,6 +218,8 @@ class App extends React.Component {
 	};
 
 	render () {
+		const {openCardPopup, closeCardPopup, saveCardPopup, cardPopup} = this.props;
+
 		const renderColumns = this.state.columns.map((column, index) => {
 			return 	<Column
 				column={column}
@@ -230,7 +232,7 @@ class App extends React.Component {
 
 				draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
 				draggedCardIndex = {this.state.draggedCardIndex}
-				openCard = {this.openCard}
+				openCard = {openCardPopup}
 
 				onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
 				onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
@@ -251,11 +253,11 @@ class App extends React.Component {
 
 				<div className="main-container">
 
-					{this.state.cardPopup ? (
+					{cardPopup.isOpen ? (
 						<CardDetail
 							saveCard = {this.saveCard}
-							closeCard={this.closeCard}
-							card={this.state.columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] || {}} />
+							closeCard = {this.closeCard}
+							card = {this.state.columns[cardPopup.columnIndex]['cards'][cardPopup.cardIndex] || {}} />
 					) : ''}
 
 					{!this.state.isAuthorized ?
@@ -277,12 +279,18 @@ class App extends React.Component {
 	}
 }
 
-const mapStateToProps = () => {
-	return {};
+const mapStateToProps = (store, ownProps) => {
+	return {
+		cardPopup: store.cardPopup
+	};
 };
 
-const mapDispatchTOProps = () => {
-	return {};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		openCardPopup: (columnIndex, cardIndex) => dispatch(openCardPopup({columnIndex, cardIndex})),
+		closeCardPopup: () => dispatch(closeCardPopup()),
+		saveCardPopup: () => dispatch(saveCardPopup()),
+	};
 };
 
-export default connect(mapStateToProps, mapDispatchTOProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

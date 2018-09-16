@@ -1,13 +1,13 @@
-import {START_TASK_LOADING, SUCCESS_TASK_LOADING} from './../actions/columns'
+import {START_TASK_LOADING, SUCCESS_TASK_LOADING, ERROR_TASK_LOADING} from './../actions/columns'
 import update from 'react-addons-update';
-import {ERROR_TASK_LOADING} from "../actions/columns";
+import initialState from './../data/initialState';
 
-const initialState = {
 
-};
+export default function columns( store = {}, action) {
+	return store;
 
-export default function columns( store = initialState, action) {
-	console.log('dispatch action', action);
+	/*console.log(store);
+	console.log('dispatch action', action);*/
 	switch (action.type) {
 		case START_TASK_LOADING:
 			return update(store, {

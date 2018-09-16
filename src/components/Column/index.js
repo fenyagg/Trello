@@ -60,7 +60,7 @@ class Columns extends React.Component {
 				onCardDragStart = {onCardDragStart.bind(this, index)}
 				onDragEnd = {onCardDragEnd.bind(this, index)}
 				onDragEnter = {onCardDragEnter.bind(this, index)}
-				onCardClick = {this.onCardClick.bind(this, columnIndex, index)}
+				onCardClick = {() => openCard(columnIndex, index)}
 				isDraggable = {draggedCardColumnIndex === columnIndex && draggedCardIndex === index}
 				card={card}
 				cardIndex = {index}
