@@ -1,14 +1,16 @@
 import React from 'react'
 import Card from '../Card'
+import {connect} from 'react-redux';
 
 import './style.css'
+import {openCardPopup} from "../../actions/cardPopup";
 
 class Columns extends React.Component {
 	constructor(props) {
 		super(props);
-		
+
 		const {column} = props;
-		
+
 		this.state = {
 			isDragging: false,
 			column: column,
@@ -42,7 +44,7 @@ class Columns extends React.Component {
 
 	render(){
 		const {
-			openCard,
+            openCardPopup,
 			onCardDragStart,
 			onCardDragEnd,
 			onCardEnterColumn,
@@ -60,10 +62,10 @@ class Columns extends React.Component {
 				onCardDragStart = {onCardDragStart.bind(this, index)}
 				onDragEnd = {onCardDragEnd.bind(this, index)}
 				onDragEnter = {onCardDragEnter.bind(this, index)}
-				onCardClick = {() => openCard(columnIndex, index)}
 				isDraggable = {draggedCardColumnIndex === columnIndex && draggedCardIndex === index}
 				card={card}
 				cardIndex = {index}
+                onCardClick = {openCardPopup.bind(this, columnIndex, index)}
 				key={card.id}/>
 		});
 		const columnClass = ['column'];
@@ -97,7 +99,7 @@ class Columns extends React.Component {
 					<footer className="column-footer"
 					        onDragEnter={onCardEnterColumn.bind(this, columnIndex, this.state.column.cards.length)}>
 						<a href="#0"
-						   onClick={e => {e.preventDefault(); openCard(columnIndex , -1 )}}
+						   onClick={e => {e.preventDefault(); openCardPopup(columnIndex , -1 )}}
 						   className="add-task-link">+ Добавить еще 1 карточку</a>
 					</footer>
 
@@ -107,4 +109,16 @@ class Columns extends React.Component {
 	}
 }
 
-export default Columns
+
+const mapStateToProps = (store) => {
+    return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openCardPopup: (columnIndex, cardIndex) => dispatch(openCardPopup({columnIndex, cardIndex})),
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Columns)

@@ -218,7 +218,7 @@ class App extends React.Component {
 	};
 
 	render () {
-		const {openCardPopup, closeCardPopup, saveCardPopup, cardPopup} = this.props;
+		const {cardPopup} = this.props;
 
 		const renderColumns = this.state.columns.map((column, index) => {
 			return 	<Column
@@ -232,7 +232,6 @@ class App extends React.Component {
 
 				draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
 				draggedCardIndex = {this.state.draggedCardIndex}
-				openCard = {openCardPopup}
 
 				onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
 				onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
