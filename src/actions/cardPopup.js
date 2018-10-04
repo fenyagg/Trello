@@ -10,9 +10,7 @@ export const openCardPopup = ({columnIndex = -1, cardIndex = -1}) => {
 };
 
 export const closeCardPopup = () => {
-    return dispatch => {
-        dispatch({ type: 'CLOSE_CARD_POPUP' })
-    }
+    return { type: 'CLOSE_CARD_POPUP' }
 };
 
 export const saveCardPopup = (card) => {

@@ -1,4 +1,7 @@
 import React from 'react';
+import connect from 'react-redux/es/connect/connect'
+import { login } from '../../actions/user'
+
 
 class AuthForm extends React.Component {
 	constructor(props){
@@ -18,10 +21,10 @@ class AuthForm extends React.Component {
 
 	onSubmit = (e) => {
 		e.preventDefault();
-		this.props.onAuth({
-			'email': this.state.email,
-			'password': this.state.password,
-		});
+		this.props.login({
+			email: this.state.email,
+			password: this.state.password
+		})
 	};
 
 	render(){
@@ -50,4 +53,11 @@ class AuthForm extends React.Component {
 		)
 	}
 }
-export default AuthForm;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (email, password) => dispatch(login({email, password})),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AuthForm)

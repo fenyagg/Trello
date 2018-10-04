@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-
+import { connect } from 'react-redux'
 import HeaderUser from '../../components/HeaderUser'
-
 import './style.css'
+
 
 class Article extends Component {
 
@@ -38,9 +38,9 @@ class Article extends Component {
 				<div className='container'>
 					<div className="h-container">
 						<div className="h-title">Trello</div>
-						
+
 						{isAuthorized ? <HeaderUser onExit={onExit}/> : null}
-						
+
 					</div>
 				</div>
 			</header>
@@ -48,4 +48,10 @@ class Article extends Component {
 	}
 }
 
-export default Article
+const mapStoreToProps = store => {
+	return {
+    isAuthorized: store.user.isAuthorized
+	}
+}
+
+export default connect(mapStoreToProps, null)(Article)

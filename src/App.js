@@ -19,7 +19,7 @@ import {clone} from 'lodash/lang';
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
 			openCardColumnIndex: -1,
 			openCardIndex: -1,
@@ -35,7 +35,7 @@ class App extends React.Component {
 			}
 		}
 	}
-	
+
 	static contextTypes = {
 		store: PropTypes.object
 	};
@@ -85,13 +85,13 @@ class App extends React.Component {
 				'draggedColumn': -1
 			});
 		},
-		
+
 		onDragEnter: (overColumnIndex, overCardIndex) => {
 			if (this.state.draggedCardColumnIndex === -1 ||
 				this.state.draggedCardIndex === -1 ||
 					(this.state.draggedCardColumnIndex === overColumnIndex &&
 					this.state.draggedCardIndex === overCardIndex))  return true;
-			
+
 			this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, overCardIndex);
 		},
 		onDragStart: (columnIndex, cardIndex) => {
@@ -109,18 +109,18 @@ class App extends React.Component {
 				(this.state.draggedCardColumnIndex === newColumn &&
 				this.state.draggedCardIndex === newIndex)
 			) return;
-			
+
 			let cloneColumns = clone(this.state.columns);
-			
+
 			newIndex = newIndex > cloneColumns[newColumn]['cards'].length-1 ? cloneColumns[newColumn]['cards'].length-1 : newIndex;
 			newIndex = newIndex < 0 ? 0 : newIndex;
-			
+
 			// cut dragged card
 			let draggedCard = cloneColumns[this.state.draggedCardColumnIndex]['cards'].splice(this.state.draggedCardIndex, 1)[0];
-			
+
 			// put in new column
 			cloneColumns[newColumn]['cards'].splice(newIndex, 0, draggedCard);
-			
+
 			this.setState({
 				'draggedCardColumnIndex': newColumn,
 				'draggedCardIndex': newIndex,
@@ -128,7 +128,7 @@ class App extends React.Component {
 			});
 		}
 	};
-	
+
 	openCard = (columnIndex, cardIndex ) => {
 		this.setState({
 			openCardColumnIndex: columnIndex,
@@ -156,7 +156,7 @@ class App extends React.Component {
 			}
 		}
 	};
-	
+
 	addColumn = event => {
 		event.preventDefault();
 		this.setState({
@@ -206,19 +206,8 @@ class App extends React.Component {
 		}
 	};
 
-	onAuth = formData => {
-		this.setState({
-			isAuthorized: true
-		});
-	};
-	onExit = () => {
-		this.setState({
-			isAuthorized: false
-		});
-	};
-
 	render () {
-		const {cardPopup} = this.props;
+		const {cardPopup, isAuthorized} = this.props;
 
 		const renderColumns = this.state.columns.map((column, index) => {
 			return 	<Column
@@ -245,8 +234,6 @@ class App extends React.Component {
 				 onDrop = {this.onDrop} >
 
 				<Header
-						isAuthorized={this.state.isAuthorized}
-						onExit={this.onExit}
 						onDrop={this.onDeleteDrop}
 						isDraggedItems={(this.state.draggedCardColumnIndex > -1 && this.state.draggedCardIndex > -1) || this.state.draggedColumn > -1}/>
 
@@ -259,8 +246,8 @@ class App extends React.Component {
 							card = {this.state.columns[cardPopup.columnIndex]['cards'][cardPopup.cardIndex] || {}} />
 					) : ''}
 
-					{!this.state.isAuthorized ?
-						<AuthTabs onAuth={this.onAuth} /> :
+					{!isAuthorized && <AuthTabs />}
+					{isAuthorized &&
 						(<div className="columns-list">
 							{renderColumns}
 
@@ -280,7 +267,8 @@ class App extends React.Component {
 
 const mapStateToProps = (store, ownProps) => {
 	return {
-		cardPopup: store.cardPopup
+		cardPopup: store.cardPopup,
+    isAuthorized: store.user.isAuthorized
 	};
 };
 

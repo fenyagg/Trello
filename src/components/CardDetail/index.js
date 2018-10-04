@@ -63,7 +63,7 @@ class CardDetail extends React.Component {
         return (
             <div className="popup-wrapper">
                 <div onClick={closeCardPopup}
-                     className="popup-shadow"></div>
+                     className="popup-shadow"> </div>
                 <form onSubmit={e => this.saveCard(e, this.context.store.cardPopup)} className="card-detail">
                     <button onClick={closeCardPopup}
                             type="button"
@@ -109,7 +109,9 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        closeCardPopup: () => {closeCardPopupAction()},
+        closeCardPopup: () => {
+            dispatch(closeCardPopupAction())
+        },
         saveCardToStore: (card, columnIndex, cardIndex) => {
             dispatch(
                 saveCard({

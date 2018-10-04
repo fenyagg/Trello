@@ -1,23 +1,35 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import './style.css'
+import { logout } from '../../actions/user'
 
 class HeaderUser extends Component {
-
-	user = {
-		'name': 'Сильвестр',
-		'secondName': 'Сталоне'
-	};
-
 	render(){
-		const {onExit} = this.props;
+		const {name, secondName, logout} = this.props;
 		return (
 			<div className="header-user">
-				<a href="#0" className="header-user__avatar" style={{'backgroundImage': 'url("/img/stalone.jpg")'}} title={this.user.name+' '+this.user.secondName}> </a>
+				<a href="#0" className="header-user__avatar"
+					 style={{'backgroundImage': 'url("/img/stalone.jpg")'}}
+					 title={name+' '+secondName}> </a>
 
-				<a href="#0" className="header-user__exit" onClick={e => {e.preventDefault(); onExit()}}>Выход</a>
+				<a href="#0" className="header-user__exit"
+					 onClick={e => {e.preventDefault(); logout()}}>Выход</a>
 			</div>
 		)
 	}
 }
 
-export default HeaderUser
+const mapStateToProps = store => {
+	return {
+		name: store.user.name,
+    secondName: store.user.secondName
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderUser)

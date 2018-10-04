@@ -29,7 +29,6 @@ class AuthTabs extends React.Component {
 	};
 
 	render(){
-		const {onAuth} = this.props;
 		const tabLinks = this.state.tabs.map((tab, tabIndex) => {
 			let itemClass = ['nav-link', tab.id === this.state.activeTab ? 'active': ''].join(' ');
 			return (
@@ -48,8 +47,8 @@ class AuthTabs extends React.Component {
 					</header>
 
 					<main className="auth-tabs__body">
-						{ this.state.activeTab === 'auth' ? <AuthForm onAuth={onAuth}/> : null}
-						{ this.state.activeTab === 'register' ? <RegisterForm onAuth={onAuth}/> : null}
+						{ this.state.activeTab === 'auth' ? <AuthForm /> : null}
+						{ this.state.activeTab === 'register' ? <RegisterForm /> : null}
 					</main>
 				</div>
 			</div>

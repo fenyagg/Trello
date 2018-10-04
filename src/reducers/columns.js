@@ -1,14 +1,11 @@
 import {SAVE_CARD} from './../actions/columns'
-// import update from 'react-addons-update';
-// import initialState from './../data/initialState';
+import columnsData from '../data/columns'
 
-
-export default function columns(store = {}, action) {
-
+export default function columns(store = columnsData, action) {
     switch (action.type) {
         case SAVE_CARD:
             console.log(store);
-            console.log('dispatch action columns', action.payload);
+            console.log('dispatch action SAVE_CARD', action.payload);
             return store;
         /*return update(store, {
             isLoading: {$set: true},
