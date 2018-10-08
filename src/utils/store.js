@@ -1,8 +1,7 @@
 
-import { createStore, applyMiddleware, compose} from 'redux';
+import { createStore, applyMiddleware} from 'redux';
 import initReducers from './../reducers';
 import middlewares from './../middlewares';
-import initialState from './../data/initialState';
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 

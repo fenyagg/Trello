@@ -1,52 +1,58 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect'
 import { login } from '../../actions/user'
-
+import ValidateField from './../ValidateField'
 
 class AuthForm extends React.Component {
 	constructor(props){
 		super(props);
 
-		this.state = {
-			email: '',
-			password: '',
-		};
+    this.email = React.createRef();
+    this.password = React.createRef();
 	}
 
-	onChange = (name, value) => {
-		let newState = {};
-		newState[name] = value;
-		this.setState(newState);
-	};
+  fields = []
 
 	onSubmit = (e) => {
 		e.preventDefault();
-		this.props.login({
-			email: this.state.email,
-			password: this.state.password
+
+		const errorFields = this.fields.filter( fieldComponent => {
+			return (fieldComponent.state.isValid !== undefined && !fieldComponent.state.isValid)
+							|| !fieldComponent.validate()
 		})
+
+		if (!errorFields.length)
+			this.props.login({
+				email: this.email.value,
+				password: this.password.value
+			})
 	};
 
 	render(){
 		return (
 			<form className="form auth-form" onSubmit={this.onSubmit}>
-				<div className="form-group">
-					<input type="email"
-					       className="form-control"
-					       placeholder="Email"
-					       required="required"
-					       onChange={e => this.onChange('email', e.target.value)}
-					       value={this.state.email}/>
-				</div>
+        <ValidateField
+					component='input'
+					type="text"
+					className="form-control"
+					placeholder="Email"
+					defaultValue=""
+          validRules={['required', 'email']}
+					ref={field => this.fields.push(field)}
+				 />
 
-				<div className="form-group">
-					<input type="password"
-					       className="form-control"
-					       placeholder="Пароль"
-					       required="required"
-					       onChange={e => this.onChange('password', e.target.value)}
-					       value={this.state.password}/>
-				</div>
+        <ValidateField
+          component='input'
+          type="password"
+          className="form-control"
+          placeholder="Password"
+          defaultValue=""
+					validRules={[
+						'required',
+						{'minLength': 6}
+					]}
+          ref={field => this.fields.push(field)}
+        />
 
 				<button type="submit" className="btn btn-primary">Войти</button>
 			</form>

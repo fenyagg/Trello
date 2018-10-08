@@ -1,3 +1,7 @@
+/**
+ * test file
+ * todo delete this file
+ */
 
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
