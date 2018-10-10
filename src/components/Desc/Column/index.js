@@ -1,9 +1,9 @@
 import React from 'react'
-import Card from '../Card'
+import Card from '../Card/index'
 import {connect} from 'react-redux';
 
 import './style.css'
-import {openCardPopup} from "../../actions/cardPopup";
+import {openCardPopup} from "../../../actions/cardPopup";
 
 class Columns extends React.Component {
 	constructor(props) {
@@ -16,7 +16,7 @@ class Columns extends React.Component {
 			column: column,
 		};
 	}
-	
+
 	onCardClick = cardIndex => {
 		this.props.openCard(this.props.index, cardIndex);
 	};
@@ -35,7 +35,7 @@ class Columns extends React.Component {
 	onDragEnter = e => {
 		e.preventDefault();
 	};
-	
+
 	onDragStart = e => {
 		// dont fire on drag card
 		if (e.target.className === 'column')
@@ -44,19 +44,19 @@ class Columns extends React.Component {
 
 	render(){
 		const {
-            openCardPopup,
+			openCardPopup,
 			onCardDragStart,
 			onCardDragEnd,
 			onCardEnterColumn,
 			onCardDragEnter,
 			index:columnIndex,
-			
+
 			draggedCardColumnIndex,
 			draggedCardIndex,
 			onDragEnter,
 			onDragEnd
 		} = this.props;
-		
+
 		const cardsList = this.state.column.cards.map((card,index) => {
 			return <Card
 				onCardDragStart = {onCardDragStart.bind(this, index)}

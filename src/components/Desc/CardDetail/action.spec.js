@@ -1,4 +1,4 @@
-import * as cardPopupActions from './../../actions/cardPopup'
+import * as cardPopupActions from '../../../actions/cardPopup'
 
 describe('card popup action', function () {
   it('Тест action card popup', () => {

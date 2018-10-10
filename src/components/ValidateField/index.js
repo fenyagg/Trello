@@ -20,10 +20,13 @@ class ValidateField extends PureComponent {
       case ('email'):
       case ('phone'):
         if (!this.rules[props.type]) this.rules.push(props.type)
-        break;
+        break
+      default:
+        break
     }
   }
 
+  value = ''
   previewValue = ''
   wasChanged = false
   rules = []
@@ -39,6 +42,7 @@ class ValidateField extends PureComponent {
   }
 
   onInput(e) {
+    this.value = this.field.current.value
     if (this.wasChanged || this.state.isValid !== undefined) this.validate()
     if(this.props.onChange) this.props.onChange(e, this.isValid)
   }

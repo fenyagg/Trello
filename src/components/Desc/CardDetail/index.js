@@ -2,12 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import './style.css'
-import {closeCardPopup as closeCardPopupAction} from "../../actions/cardPopup";
-import {saveCard} from "../../actions/columns";
+import {closeCardPopup as closeCardPopupAction} from "../../../actions/cardPopup";
+import {saveCard} from "../../../actions/columns";
 import PropTypes from "prop-types";
 
 class CardDetail extends React.Component {
-
     constructor(props) {
         super(props);
 

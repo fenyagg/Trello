@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import HeaderUser from '../../components/HeaderUser'
+import HeaderUser from './HeaderUser/index'
 import './style.css'
 
 
-class Article extends Component {
+class Header extends Component {
 
 	constructor(props){
 		super(props);
@@ -20,11 +20,13 @@ class Article extends Component {
 	};
 
 	render(){
-		const {isDraggedItems, onExit, isAuthorized} = this.props;
+		const {dndCard, dndColumn, onExit, isAuthorized} = this.props
 
-		let hWrapperClass = ['h-wrapper'];
-		if (isDraggedItems) hWrapperClass.push('_delete-header');
-		if (this.state.draggingOver) hWrapperClass.push('_dragging-over');
+		const isDraggedItems = dndCard.isDragging || dndColumn.isDragging
+
+		const hWrapperClass = ['h-wrapper']
+		if (isDraggedItems) hWrapperClass.push('_delete-header')
+		if (this.state.draggingOver) hWrapperClass.push('_dragging-over')
 
 		return (
 			<header
@@ -50,8 +52,10 @@ class Article extends Component {
 
 const mapStoreToProps = store => {
 	return {
-    isAuthorized: store.user.isAuthorized
+    isAuthorized: store.user.isAuthorized,
+		dndCard: store.dndCard,
+    dndColumn: store.dndColumn,
 	}
 }
 
-export default connect(mapStoreToProps, null)(Article)
+export default connect(mapStoreToProps, null)(Header)

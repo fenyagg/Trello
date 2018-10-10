@@ -4,7 +4,7 @@ import { keys as _keys } from 'lodash/object'
 export class FieldValidator {
    validateFunctions = {
     required: field => (!!field.value.trim()),
-    email: field => /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/.test(field.value),
+    email: field => /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/.test(field.value),
     minLength: (field, params) => (!field.value || field.value.trim().length >= params)
   }
 

@@ -1,32 +1,32 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect'
-import { login } from '../../actions/user'
-import ValidateField from './../ValidateField'
+import { login } from '../../../actions/user'
+import ValidateField from '../../ValidateField/index'
+import PropTypes from 'prop-types'
 
 class AuthForm extends React.Component {
-	constructor(props){
-		super(props);
 
-    this.email = React.createRef();
-    this.password = React.createRef();
-	}
-
-  fields = []
+  fields = {}
+	isFormValid = true
 
 	onSubmit = (e) => {
 		e.preventDefault();
 
-		const errorFields = this.fields.filter( fieldComponent => {
-			return (fieldComponent.state.isValid !== undefined && !fieldComponent.state.isValid)
-							|| !fieldComponent.validate()
-		})
+		this.isFormValid = true
+		for ( let fieldName in this.fields ) {
+			const fieldComponent = this.fields[fieldName]
+			if (fieldComponent.isValid === false || !fieldComponent.validate()){
+        this.isFormValid = false
+      }
+		}
 
-		if (!errorFields.length)
-			this.props.login({
-				email: this.email.value,
-				password: this.password.value
-			})
-	};
+		if (this.isFormValid) {
+      this.props.login(
+        this.fields['email']['value'],
+        this.fields['password']['value']
+      )
+		}
+	}
 
 	render(){
 		return (
@@ -38,7 +38,7 @@ class AuthForm extends React.Component {
 					placeholder="Email"
 					defaultValue=""
           validRules={['required', 'email']}
-					ref={field => this.fields.push(field)}
+					ref={field => this.fields['email'] = field}
 				 />
 
         <ValidateField
@@ -51,7 +51,7 @@ class AuthForm extends React.Component {
 						'required',
 						{'minLength': 6}
 					]}
-          ref={field => this.fields.push(field)}
+          ref={field => this.fields['password'] = field}
         />
 
 				<button type="submit" className="btn btn-primary">Войти</button>
@@ -65,5 +65,9 @@ const mapDispatchToProps = (dispatch) => {
     login: (email, password) => dispatch(login({email, password})),
   };
 };
+
+AuthForm.proptypes = {
+	login: PropTypes.func.isRequired
+}
 
 export default connect(null, mapDispatchToProps)(AuthForm)

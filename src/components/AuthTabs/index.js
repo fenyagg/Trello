@@ -1,8 +1,8 @@
 import React from 'react';
 import './style.css';
 
-import AuthForm from '../AuthForm';
-import RegisterForm from '../RegisterForm';
+import AuthForm from './AuthForm';
+import RegisterForm from './RegisterForm';
 
 
 class AuthTabs extends React.Component {

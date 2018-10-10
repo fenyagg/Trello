@@ -1,6 +1,6 @@
 
-import cardPopupReducer from './../../reducers/cardPopup'
-import * as cardPopupActions from './../../actions/cardPopup'
+import cardPopupReducer from '../../../reducers/cardPopup'
+import * as cardPopupActions from '../../../actions/cardPopup'
 
 describe('card popup reducer', function () {
   it('Тест открытия popup окна', () => {

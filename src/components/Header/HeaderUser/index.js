@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import './style.css'
-import { logout } from '../../actions/user'
+import { logout } from '../../../actions/user'
 
 class HeaderUser extends Component {
 	render(){

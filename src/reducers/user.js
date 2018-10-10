@@ -1,5 +1,4 @@
 import {USER_LOGIN, USER_LOGOUT} from './../actions/user';
-//import update from 'react-addons-update';
 
 const initialClearStore = {
   id: '',

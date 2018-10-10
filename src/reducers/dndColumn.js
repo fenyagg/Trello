@@ -1,5 +1,4 @@
-//import {OPEN_CARD_POPUP, CLOSE_CARD_POPUP, SAVE_CARD_POPUP} from './../actions/cardPopup';
-//import update from 'react-addons-update';
+import { SET_DRAGGING_COLUMN } from '../actions/dndColumn'
 
 const initialStore = {
   columnIndex: '',
@@ -8,6 +7,10 @@ const initialStore = {
 
 export default function dndColumn( store = initialStore, action) {
   switch (action.type){
+    case SET_DRAGGING_COLUMN:
+      return {
+        ...action.payload
+      }
     default:
       return store;
   }
