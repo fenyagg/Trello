@@ -1,4 +1,4 @@
-import {USER_LOGIN, USER_LOGOUT} from './../actions/user';
+import { USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './../actions/user'
 
 const initialClearStore = {
   id: '',
@@ -29,6 +29,12 @@ export default function user( store = initialStore, action) {
     case USER_LOGOUT:
       return {
         ...initialClearStore
+      }
+    case USER_REGISTER:
+      return {
+        ...store,
+        email: action.payload.email,
+        isAuthorized: true
       }
     default:
       return store;

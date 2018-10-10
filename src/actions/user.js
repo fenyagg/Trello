@@ -13,3 +13,11 @@ export const logout = () => {
     type: USER_LOGOUT
   }
 }
+
+export const USER_REGISTER = 'USER_REGISTER'
+export const register = ({email = '', password = ''}) => {
+  return {
+    type: USER_REGISTER,
+    payload: { email, password }
+  }
+}
