@@ -1,40 +1,55 @@
 import React from 'react'
-
 import './style.css'
+import { openCardPopup } from '../../../actions/cardPopup'
+import connect from 'react-redux/es/connect/connect'
 
 class Cards extends React.Component {
 
-	constructor(props){
-		super(props)
-		
-		this.state = {
-			cardIndex: props.cardIndex
-		};
-	}
-	
-	
-	render(){
-		const {card, onCardDragStart, onDragEnter, onCardClick, isDraggable, onDragEnd} = this.props;
-		const cardClass = ['card-container'];
-		
-		if (isDraggable) cardClass.push('_dragging');
-		
-		return (
-			<article
-				className={cardClass.join(' ')}
-				onDragEnter={onDragEnter}
-				onClick={onCardClick}
-			>
-				<div className="card"
-				     onDragStart={onCardDragStart}
-				     onDragEnd = {onDragEnd}
-				     draggable="true"
-				>
-					<div className="card-title">{card.title}</div>
-				</div>
-			</article>
-		);
-	}
+  render () {
+    const {card,
+      columnIndex,
+      cardIndex,
+      openCardPopup,
+      onCardDragStart,
+      onDragEnter,
+      isDraggable,
+      onDragEnd} = this.props
+
+    const cardClass = ['card-container']
+    if (isDraggable) cardClass.push('_dragging')
+
+    return (
+      <article
+        className={cardClass.join(' ')}
+        onDragEnter={onDragEnter}
+        onClick={openCardPopup.bind(this)}
+      >
+        <div className="card"
+             onDragStart={onCardDragStart}
+             onDragEnd={onDragEnd}
+             draggable="true"
+        >
+          <div className="card-title">{card.title}</div>
+        </div>
+      </article>
+    )
+  }
 }
 
-export default Cards
+const mapStateToProps = (state, ownProps) => {
+  return {
+    card: state.columns[ownProps.columnIndex]['cards'][ownProps.cardIndex]
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    openCardPopup: () => dispatch(openCardPopup(
+      ownProps.columnIndex,
+      ownProps.cardIndex
+    ))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cards)

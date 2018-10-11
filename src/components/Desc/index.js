@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import CardDetail from './CardDetail'
 import Column from './Column'
 import { clone } from 'lodash/lang'
-import {openCardPopup, closeCardPopup, saveCardPopup} from '../../actions/cardPopup';
 
 class Desc extends Component {
   constructor (props) {
@@ -129,35 +128,14 @@ class Desc extends Component {
       cardPopup: true,
     });
   };
-  closeCard = () => {
-    this.setState({
-      openCardColumnIndex: -1,
-      openCardIndex: -1,
-      cardPopup: false,
-    });
-  };
-  saveCard = card => {
-    if (this.state.openCardColumnIndex > -1) {
-      let columns = this.state.columns;
-      // change card data
-      if (card.id && this.state.openCardIndex > -1) {
-        columns[this.state.openCardColumnIndex]['cards'][this.state.openCardIndex] = card;
-        this.setState({'columns': columns});
-      } else { // new card
-        // todo set state
-        this.state.columns[this.state.openCardColumnIndex].cards.push(card);
-      }
-    }
-  };
 
   render () {
-    const { cardPopup, columns, openCardPopup, closeCardPopup, saveCardPopup } = this.props
+    const { cardPopup, columns} = this.props
 
     const renderColumns = columns.map((column, index) => {
       return 	<Column
-        column={column}
         key={column.id}
-        index={index}
+        columnIndex={index}
         onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
         onCardDragEnd = {this.cardDragAndDrop.onDragEnd.bind(this, index)}
         onCardDragEnter = {this.cardDragAndDrop.onDragEnter.bind(this, index)}
@@ -174,10 +152,7 @@ class Desc extends Component {
 
     return (
       <React.Fragment>
-        {cardPopup.isOpen ? (
-          <CardDetail
-            card = {this.state.columns[cardPopup.columnIndex]['cards'][cardPopup.cardIndex] || {}} />
-        ) : ''}
+        {cardPopup.isOpen && <CardDetail />}
 
         <div className="columns-list">
           {renderColumns}
@@ -202,9 +177,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    openCardPopup: (columnIndex, cardIndex) => dispatch(openCardPopup({columnIndex, cardIndex})),
-    closeCardPopup: () => dispatch(closeCardPopup()),
-    saveCardPopup: () => dispatch(saveCardPopup()),
+
   }
 }
 

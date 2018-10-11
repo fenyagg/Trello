@@ -1,124 +1,125 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import Card from '../Card/index'
-import {connect} from 'react-redux';
-
+import { openCardPopup } from '../../../actions/cardPopup'
 import './style.css'
-import {openCardPopup} from "../../../actions/cardPopup";
+import { saveColumn } from '../../../actions/columns'
 
-class Columns extends React.Component {
-	constructor(props) {
-		super(props);
+class Columns extends React.PureComponent {
+  constructor (props) {
+    super(props)
 
-		const {column} = props;
+    this.state = {
+      isDragging: false
+    }
+  }
 
-		this.state = {
-			isDragging: false,
-			column: column,
-		};
-	}
+  keyDownColumnName = e => {
+    if (['Enter', 'Escape'].includes(e.key))
+      e.target.blur()
+  }
+  onBlur = e => {
+    if (!e.target.value) e.target.value = this.props.column.name
+    this.props.saveColumn({name: e.target.value})
+  }
 
-	onCardClick = cardIndex => {
-		this.props.openCard(this.props.index, cardIndex);
-	};
+  // drag and drop cursor fix
+  onDragEnter = e => {
+    e.preventDefault()
+  }
 
-	changeColumnName = event => {
-		let column = this.state.column;
-		column.name = event.target.value;
-		this.setState({column: column});
-	};
-	keyDownColumnName = event => {
-		if (['Enter', 'Escape'].includes(event.key))
-			event.target.blur();
-	};
+  onDragStart = e => {
+    // dont fire on drag card
+    if (e.target.className === 'column')
+      this.props.onDragStart()
+  }
 
-	// drag and drop cursor fix
-	onDragEnter = e => {
-		e.preventDefault();
-	};
+  render () {
+    const {
+      column,
+      openNewCardPopup,
+      onCardDragStart,
+      onCardDragEnd,
+      onCardEnterColumn,
+      onCardDragEnter,
+      columnIndex,
 
-	onDragStart = e => {
-		// dont fire on drag card
-		if (e.target.className === 'column')
-			this.props.onDragStart();
-	};
+      onDragEnter,
+      onDragEnd
+    } = this.props
 
-	render(){
-		const {
-			openCardPopup,
-			onCardDragStart,
-			onCardDragEnd,
-			onCardEnterColumn,
-			onCardDragEnter,
-			index:columnIndex,
+    const cardsList = column.cards.map((card, index) => {
+      return <Card
+        onCardDragStart={onCardDragStart.bind(this, index)}
+        onDragEnd={onCardDragEnd.bind(this, index)}
+        onDragEnter={onCardDragEnter.bind(this, index)}
+        columnIndex={columnIndex}
+        cardIndex={index}
+        key={card.id}/>
+    })
+    const columnClass = ['column']
+    if (this.state.isDragging) columnClass.push('_dragging')
 
-			draggedCardColumnIndex,
-			draggedCardIndex,
-			onDragEnter,
-			onDragEnd
-		} = this.props;
-
-		const cardsList = this.state.column.cards.map((card,index) => {
-			return <Card
-				onCardDragStart = {onCardDragStart.bind(this, index)}
-				onDragEnd = {onCardDragEnd.bind(this, index)}
-				onDragEnter = {onCardDragEnter.bind(this, index)}
-				isDraggable = {draggedCardColumnIndex === columnIndex && draggedCardIndex === index}
-				card={card}
-				cardIndex = {index}
-                onCardClick = {openCardPopup.bind(this, columnIndex, index)}
-				key={card.id}/>
-		});
-		const columnClass = ['column'];
-		if (this.state.isDragging) columnClass.push('_dragging');
-
-		return (
-			<div className="column-wrapper"
-			     onDragEnter={onDragEnter}
-			>
-				<div
-					className={columnClass.join(' ')}
-					onDragEnter = {this.onDragEnter}
-					onDragStart = {this.onDragStart}
-					onDragEnd = {onDragEnd}
-					draggable="true"
-				>
-					<header
-						onDragEnter={onCardEnterColumn.bind(this, columnIndex, 0)}
-						className="column-header">
-						<input className="column-title"
-						       type="text"
-						       value={this.state.column.name}
-						       onKeyDown={this.keyDownColumnName}
-						       onChange={this.changeColumnName}/>
-					</header>
-					<main className="column-cards">
-						<div className="card-list">
-							{cardsList}
-						</div>
-					</main>
-					<footer className="column-footer"
-					        onDragEnter={onCardEnterColumn.bind(this, columnIndex, this.state.column.cards.length)}>
-						<a href="#0"
-						   onClick={e => {e.preventDefault(); openCardPopup(columnIndex , -1 )}}
-						   className="add-task-link">+ Добавить еще 1 карточку</a>
-					</footer>
-
-				</div>
-			</div>
-	);
-	}
+    return (
+      <div className="column-wrapper"
+           onDragEnter={onDragEnter}
+      >
+        <div
+          className={columnClass.join(' ')}
+          onDragEnter={this.onDragEnter}
+          onDragStart={this.onDragStart}
+          onDragEnd={onDragEnd}
+          draggable="true"
+        >
+          <header
+            onDragEnter={onCardEnterColumn.bind(this, columnIndex, 0)}
+            className="column-header">
+            <input className="column-title"
+                   type="text"
+                   defaultValue={column.name}
+                   onKeyDown={this.keyDownColumnName}
+                   onBlur={this.onBlur}/>
+          </header>
+          <main className="column-cards">
+            <div className="card-list">
+              {cardsList}
+            </div>
+          </main>
+          <footer className="column-footer"
+                  onDragEnter={onCardEnterColumn.bind(this, columnIndex, column.cards.length)}>
+            <a href="#0"
+               onClick={e => {
+                 e.preventDefault()
+                 openNewCardPopup()
+               }}
+               className="add-task-link">+ Добавить еще 1 карточку</a>
+          </footer>
+        </div>
+      </div>
+    )
+  }
 }
 
 
-const mapStateToProps = (store) => {
-    return {};
-};
+const mapStateToProps = (state, ownProps) => {
+  return {
+    column: state.columns[ownProps.columnIndex]
+  }
+}
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        openCardPopup: (columnIndex, cardIndex) => dispatch(openCardPopup({columnIndex, cardIndex})),
-    };
-};
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    openNewCardPopup: () => dispatch(openCardPopup(ownProps.columnIndex, -1)),
+    saveColumn: (column) => dispatch(saveColumn(ownProps.columnIndex, column))
+  }
+}
 
+Columns.proptypes = {
+  column: PropTypes.object.isRequired,
+  columnIndex: PropTypes.number.isRequired,
+  saveColumn: PropTypes.func.isRequired,
+  openNewCardPopup: PropTypes.func.isRequired
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Columns)
