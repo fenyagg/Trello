@@ -38,3 +38,14 @@
 	::-webkit-scrollbar-track{background-color:rgba(50,50,50,.05)}
 	::-webkit-scrollbar-thumb:hover{background-color:rgba(50,50,50,.5)}
 }
+
+/* animation */
+@media all {
+  .example-appear {
+    opacity: 0.01;
+  }
+  .example-appear.example-appear-active {
+    opacity: 1;
+    transition: opacity .5s ease-in;
+  }
+}

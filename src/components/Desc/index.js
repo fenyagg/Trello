@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import CardDetail from './CardDetail'
 import Column from './Column'
 import { clone } from 'lodash/lang'
+import AnimateComponent from '../AnimateComponent'
 
 class Desc extends Component {
   constructor (props) {
@@ -121,41 +122,41 @@ class Desc extends Component {
       ]
     });
   };
-  openCard = (columnIndex, cardIndex ) => {
-    this.setState({
-      openCardColumnIndex: columnIndex,
-      openCardIndex: cardIndex,
-      cardPopup: true,
-    });
-  };
 
   render () {
     const { cardPopup, columns} = this.props
 
-    const renderColumns = columns.map((column, index) => {
-      return 	<Column
-        key={column.id}
-        columnIndex={index}
-        onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
-        onCardDragEnd = {this.cardDragAndDrop.onDragEnd.bind(this, index)}
-        onCardDragEnter = {this.cardDragAndDrop.onDragEnter.bind(this, index)}
-        onCardEnterColumn = {this.cardDragAndDrop.onEnterColumn.bind(this, index)}
-
-        draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
-        draggedCardIndex = {this.state.draggedCardIndex}
-
-        onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
-        onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
-        onDragEnd = {this.columnDragAndDrop.onDragEnd.bind(this, index)}
-      />
-    });
-
     return (
       <React.Fragment>
-        {cardPopup.isOpen && <CardDetail />}
+
+        <AnimateComponent
+          isMounted={cardPopup.isOpen}
+          mountDelay={300}
+          unmountDelay={300}
+          style={{zIndex: 1, position: 'relative'}}
+          animation={'fade'}>
+          <CardDetail />
+        </AnimateComponent>
 
         <div className="columns-list">
-          {renderColumns}
+
+          {columns.map((column, index) => {
+            return 	<Column
+              key={column.id}
+              columnIndex={index}
+              onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
+              onCardDragEnd = {this.cardDragAndDrop.onDragEnd.bind(this, index)}
+              onCardDragEnter = {this.cardDragAndDrop.onDragEnter.bind(this, index)}
+              onCardEnterColumn = {this.cardDragAndDrop.onEnterColumn.bind(this, index)}
+
+              draggedCardColumnIndex = {this.state.draggedCardColumnIndex}
+              draggedCardIndex = {this.state.draggedCardIndex}
+
+              onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
+              onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
+              onDragEnd = {this.columnDragAndDrop.onDragEnd.bind(this, index)}
+            />
+          })}
 
           <a href="#0"
              onClick={this.addColumn}

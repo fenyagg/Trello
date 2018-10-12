@@ -18,8 +18,6 @@ export default function cardPopup (store = initialStore, action) {
     case CLOSE_CARD_POPUP:
       return {
         ...store,
-        columnIndex: -1,
-        cardIndex: -1,
         isOpen: false
       }
     default:

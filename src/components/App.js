@@ -68,8 +68,6 @@ class App extends React.Component {
 	render () {
 		const {isAuthorized} = this.props;
 
-
-
 		return (
 			<div className="trello"
 				 onDragOver={this.onDragOver}

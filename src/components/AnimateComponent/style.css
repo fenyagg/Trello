@@ -1,0 +1,18 @@
+
+/* fade */
+@media all {
+  .fade-mount-start {
+    opacity: 0;
+  }
+  .fade-mount-end {
+    transition: .3s ease;
+    opacity: 1;
+  }
+  .fade-unmount-start {
+    opacity: 1;
+  }
+  .fade-unmount-end {
+    transition: .3s ease;
+    opacity: 0;
+  }
+}
