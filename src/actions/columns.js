@@ -29,3 +29,14 @@ export const addColumn = (nextColumn = {}) => {
     payload: nextColumn
   }
 }
+
+export const CHANGE_COLUMN_POSITION = 'CHANGE_COLUMN_POSITION'
+export const changeColumnPosition = ( columnIndex, overColumnIndex ) => {
+ return {
+   type: CHANGE_COLUMN_POSITION,
+   payload: {
+     columnIndex,
+     overColumnIndex
+   }
+ }
+}

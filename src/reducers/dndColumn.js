@@ -1,14 +1,20 @@
-import { SET_DRAGGING_COLUMN } from '../actions/dndColumn'
+import { COLUMN_DRAG_START, COLUMN_DRAG_END } from '../actions/dndColumn'
 
 const initialStore = {
-  columnIndex: '',
+  columnIndex: -1,
   isDragging: false
 }
 
 export default function dndColumn( store = initialStore, action) {
   switch (action.type){
-    case SET_DRAGGING_COLUMN:
+    case COLUMN_DRAG_START:
       return {
+        ...store,
+        ...action.payload
+      }
+    case COLUMN_DRAG_END:
+      return {
+        ...store,
         ...action.payload
       }
     default:

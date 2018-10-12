@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import Card from '../Card/index'
 import { openCardPopup } from '../../../actions/cardPopup'
 import './style.css'
-import { saveColumn } from '../../../actions/columns'
+import { changeColumnPosition, saveColumn } from '../../../actions/columns'
+import { endDraggingColumn, setDraggingColumn, startDraggingColumn } from '../../../actions/dndColumn'
 
 class Columns extends React.PureComponent {
   justAdded = false
@@ -26,7 +27,6 @@ class Columns extends React.PureComponent {
     }
   }
 
-
   keyDownColumnName = e => {
     if (['Enter', 'Escape'].includes(e.key))
       e.target.blur()
@@ -43,22 +43,31 @@ class Columns extends React.PureComponent {
 
   onDragStart = e => {
     // dont fire on drag card
-    if (e.target.className === 'column')
-      this.props.onDragStart()
+    // if (e.target.className === 'column')
+      this.props.startDraggingColumn(this.props.columnIndex)
+  }
+  onDragEnter = e => {
+    const { dndColumn, columnIndex } = this.props
+
+    if (dndColumn.columnIndex === columnIndex || !dndColumn.isDragging) return
+    this.props.startDraggingColumn(columnIndex)
+    this.props.changeColumnPosition(dndColumn.columnIndex, columnIndex)
+  }
+  onDragEnd = () => {
+    this.props.endDraggingColumn()
   }
 
   render () {
     const {
       column,
+      dndColumn,
+
       openNewCardPopup,
       onCardDragStart,
       onCardDragEnd,
       onCardEnterColumn,
       onCardDragEnter,
       columnIndex,
-
-      onDragEnter,
-      onDragEnd
     } = this.props
 
     const cardsList = column.cards.map((card, index) => {
@@ -70,18 +79,16 @@ class Columns extends React.PureComponent {
         cardIndex={index}
         key={card.id}/>
     })
-    const columnClass = ['column']
-    if (this.state.isDragging) columnClass.push('_dragging')
 
+    const isDragging = dndColumn.columnIndex === columnIndex && dndColumn.isDragging
     return (
       <div className="column-wrapper"
-           onDragEnter={onDragEnter}
-      >
+           onDragEnter={e => this.onDragEnter(e)} >
         <div
-          className={columnClass.join(' ')}
+          className={`column ${isDragging ? '_dragging':''}`}
           onDragEnter={this.onDragEnter}
           onDragStart={this.onDragStart}
-          onDragEnd={onDragEnd}
+          onDragEnd={this.onDragEnd.bind(this)}
           draggable="true"
         >
           <header
@@ -117,14 +124,18 @@ class Columns extends React.PureComponent {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    column: state.columns[ownProps.columnIndex]
+    column: state.columns[ownProps.columnIndex],
+    dndColumn: state.dndColumn
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     openNewCardPopup: () => dispatch(openCardPopup(ownProps.columnIndex, -1)),
-    saveColumn: (column) => dispatch(saveColumn(ownProps.columnIndex, column))
+    saveColumn: (column) => dispatch(saveColumn(ownProps.columnIndex, column)),
+    startDraggingColumn: (columnIndex) => dispatch(startDraggingColumn(columnIndex)),
+    endDraggingColumn: () => dispatch(endDraggingColumn()),
+    changeColumnPosition: (columnIndex, overColumnIndex) => dispatch(changeColumnPosition(columnIndex, overColumnIndex))
   }
 }
 

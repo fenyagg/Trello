@@ -1,11 +1,21 @@
-export const SET_DRAGGING_COLUMN = 'SET_DRAGGING_COLUMN';
 
-export const setDraggingColumn = (columnIndex) => {
+export const COLUMN_DRAG_START = 'COLUMN_DRAG_START';
+export const startDraggingColumn = (columnIndex = -1) => {
   return {
-    type: SET_DRAGGING_COLUMN,
+    type: COLUMN_DRAG_START,
     payload: {
       columnIndex,
-      isDragging: columnIndex > 0
+      isDragging: true
+    }
+  }
+}
+
+export const COLUMN_DRAG_END = 'COLUMN_DRAG_END'
+export const endDraggingColumn = () => {
+  return {
+    type: COLUMN_DRAG_END,
+    payload: {
+      isDragging: false
     }
   }
 }
