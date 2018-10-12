@@ -7,13 +7,25 @@ import './style.css'
 import { saveColumn } from '../../../actions/columns'
 
 class Columns extends React.PureComponent {
+  justAdded = false
+  columnNameField
+
   constructor (props) {
     super(props)
 
     this.state = {
-      isDragging: false
+      isDragging: false,
+    }
+    this.justAdded = props.justAdded
+  }
+
+  componentDidMount () {
+    if (this.justAdded && this.columnNameField) {
+      this.columnNameField.focus()
+      this.justAdded = false
     }
   }
+
 
   keyDownColumnName = e => {
     if (['Enter', 'Escape'].includes(e.key))
@@ -79,6 +91,7 @@ class Columns extends React.PureComponent {
                    type="text"
                    defaultValue={column.name}
                    onKeyDown={this.keyDownColumnName}
+                   ref={ field => {this.columnNameField = field}}
                    onBlur={this.onBlur}/>
           </header>
           <main className="column-cards">
@@ -119,7 +132,8 @@ Columns.proptypes = {
   column: PropTypes.object.isRequired,
   columnIndex: PropTypes.number.isRequired,
   saveColumn: PropTypes.func.isRequired,
-  openNewCardPopup: PropTypes.func.isRequired
+  openNewCardPopup: PropTypes.func.isRequired,
+  justAdded: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Columns)

@@ -1,4 +1,4 @@
-import { SAVE_CARD, UPDATE_COLUMN } from './../actions/columns'
+import { ADD_COLUMN, SAVE_CARD, UPDATE_COLUMN } from './../actions/columns'
 import columnsData from '../data/columns'
 import update from 'immutability-helper'
 
@@ -30,7 +30,6 @@ export default function columns (store = columnsData, action) {
     }
     case UPDATE_COLUMN:
     {
-      console.log('action.payload', action.payload)
       const {columnIndex, nextColumn} = action.payload
       if (columnIndex > -1) {
         return update(store, {
@@ -39,12 +38,14 @@ export default function columns (store = columnsData, action) {
           }
         })
       } else {
-        return update(store, {
-          [columnIndex]: {
-            $push: [nextColumn]
-          }
-        })
+        return store
       }
+    }
+    case ADD_COLUMN:
+    {
+      return update(store, {
+        $push: [action.payload]
+      })
     }
     default:
       return store

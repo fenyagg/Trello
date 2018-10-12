@@ -5,6 +5,7 @@ import CardDetail from './CardDetail'
 import Column from './Column'
 import { clone } from 'lodash/lang'
 import AnimateComponent from '../AnimateComponent'
+import { addColumn } from '../../actions/columns'
 
 class Desc extends Component {
   constructor (props) {
@@ -19,6 +20,8 @@ class Desc extends Component {
       draggedColumn: -1
     }
   }
+
+  lastAddedId = 0
 
   cardDragAndDrop = {
     onDragEnd: () => {
@@ -103,25 +106,21 @@ class Desc extends Component {
       cloneColumns.splice(newIndex, 0, draggedColumn);
 
       this.setState({
-        'columns': cloneColumns,
-        'draggedColumn': newIndex,
+        columns: cloneColumns,
+        draggedColumn: newIndex,
+        cards: []
       });
     }
   };
 
-  addColumn = event => {
-    event.preventDefault();
-    this.setState({
-      columns: [
-        ...this.state.columns,
-        {
-          'name': 'Новая колонка',
-          'id': 'column-'+(new Date().getTime()),
-          'cards': []
-        }
-      ]
-    });
-  };
+  addColumn () {
+    this.lastAddedId = 'column-' + (new Date().getTime())
+    this.props.addColumn({
+      name: 'Новая колонка',
+      id: this.lastAddedId,
+      cards: []
+    })
+  }
 
   render () {
     const { cardPopup, columns} = this.props
@@ -154,11 +153,12 @@ class Desc extends Component {
               onDragEnter = {this.columnDragAndDrop.onDragEnter.bind(this, index)}
               onDragStart = {this.columnDragAndDrop.onDragStart.bind(this, index)}
               onDragEnd = {this.columnDragAndDrop.onDragEnd.bind(this, index)}
+              justAdded = {this.lastAddedId === column.id}
             />
           })}
 
           <a href="#0"
-             onClick={this.addColumn}
+             onClick={this.addColumn.bind(this)}
              className="add-column-link">
             + Добавить еще 1 колонку
           </a>
@@ -177,7 +177,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-
+    addColumn: (nextColumn) => dispatch(addColumn(nextColumn))
   }
 }
 
