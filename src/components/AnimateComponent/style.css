@@ -1,4 +1,10 @@
 
+@media all {
+  .animate-component-container {
+    position: relative;
+    z-index: 1;
+  }
+}
 /* fade */
 @media all {
   .fade-mount-start {

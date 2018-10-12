@@ -1,14 +1,16 @@
 import React from 'react'
 import './style.css'
+import PropTypes from 'prop-types'
 
-export default class AnimateComponent extends React.Component {
+class AnimateComponent extends React.Component {
 
-  renderTimeOutId = 0
-  animationTimeOutId = 0
   STATUS_MOUNT_START = 0
   STATUS_MOUNT_END = 1
   STATUS_UNMOUNT_START = 2
   STATUS_UNMOUNT_END = 3
+
+  renderTimeOutId = 0
+  animationTimeOutId = 0
   classList = []
 
   constructor (props) {
@@ -19,13 +21,12 @@ export default class AnimateComponent extends React.Component {
       status: this.props.isMounted ? this.STATUS_MOUNT_START : this.STATUS_UNMOUNT_END,
       transition: 0
     }
-    if (props.animation) {
-      this.classList = {
-        [this.STATUS_MOUNT_START]: `${props.animation}-mount-start`,
-        [this.STATUS_MOUNT_END]: `${props.animation}-mount-end`,
-        [this.STATUS_UNMOUNT_START]: `${props.animation}-unmount-start`,
-        [this.STATUS_UNMOUNT_END]: `${props.animation}-unmount-end`,
-      }
+    const animationFunction = props.animation || 'default'
+    this.classList = {
+      [this.STATUS_MOUNT_START]: `${animationFunction}-mount-start`,
+      [this.STATUS_MOUNT_END]: `${animationFunction}-mount-end`,
+      [this.STATUS_UNMOUNT_START]: `${animationFunction}-unmount-start`,
+      [this.STATUS_UNMOUNT_END]: `${animationFunction}-unmount-end`,
     }
   }
 
@@ -37,15 +38,14 @@ export default class AnimateComponent extends React.Component {
     } = this.props
 
     // no mount props changed
-    if ( prevProps.isMounted === isMounted
-        || isMounted && !mountDelay
-        || !isMounted && !unmountDelay
-    ) return
+    if ( prevProps.isMounted === isMounted) return
 
+    // clear timeout
     if (this.renderTimeOutId) clearTimeout(this.renderTimeOutId)
     if (this.animationTimeOutId) clearTimeout(this.animationTimeOutId)
 
     if (isMounted) {
+      // start mount animation
       this.setState({
         shouldRender: true,
         status: this.STATUS_MOUNT_START,
@@ -59,6 +59,7 @@ export default class AnimateComponent extends React.Component {
         })
       )
     } else {
+      // start unmount animation
       this.setState({
         shouldRender: true,
         status: this.STATUS_UNMOUNT_START,
@@ -87,17 +88,31 @@ export default class AnimateComponent extends React.Component {
       unmountDelay,
       style = {},
       className = '',
+      children,
       ...props } = this.props
-    const wrapperClass = `${className} ${this.classList[this.state.status]}`
+    const wrapperClass = `${className} animate-component-container ${this.classList[this.state.status]}`
     const wrapperStyle = { ...style, transitionDuration: this.state.transition/1000+'s'}
 
     return (
       this.state.shouldRender ?
       (
         <div style={wrapperStyle} className={wrapperClass} {...props}>
-          {this.props.children}
+          {children}
         </div>
       ) : null
     )
   }
 }
+
+AnimateComponent.proptypes = {
+  children: PropTypes.element.isRequired,
+  isMounted: PropTypes.bool.isRequired,
+  mountDelay: PropTypes.number,
+  unmountDelay: PropTypes.number,
+  style: PropTypes.object,
+  className: PropTypes.string,
+  animation: PropTypes.string,
+  classList: PropTypes.object
+}
+
+export default AnimateComponent

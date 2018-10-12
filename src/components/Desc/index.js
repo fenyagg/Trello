@@ -131,10 +131,9 @@ class Desc extends Component {
 
         <AnimateComponent
           isMounted={cardPopup.isOpen}
+          animation={'fade'}
           mountDelay={300}
-          unmountDelay={300}
-          style={{zIndex: 1, position: 'relative'}}
-          animation={'fade'}>
+          unmountDelay={300}>
           <CardDetail />
         </AnimateComponent>
 
