@@ -1,16 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 //css
 import './app.css'
 //components
 import Header from './Header'
 import AuthTabs from './AuthTabs'
-
-import {clone} from 'lodash/lang';
 import Desc from './Desc'
-
 
 class App extends React.Component {
 	// drop fix https://stackoverflow.com/questions/50230048/react-ondrop-is-not-firing
@@ -35,7 +31,7 @@ class App extends React.Component {
 				</div>
 
 			</div>
-		);
+		)
 	}
 }
 

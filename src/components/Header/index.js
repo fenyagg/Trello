@@ -37,7 +37,7 @@ class Header extends Component {
 	}
 
 	render(){
-		const {dndCard, dndColumn, onExit, isAuthorized} = this.props
+		const {dndCard, dndColumn, isAuthorized} = this.props
 
 		const isDraggedItems = dndCard.isDragging || dndColumn.isDragging
 
@@ -55,7 +55,7 @@ class Header extends Component {
 				<div className='container'>
 					<div className="h-container">
 						<div className="h-title">Trello</div>
-						{isAuthorized ? <HeaderUser onExit={onExit}/> : null}
+						{isAuthorized ? <HeaderUser/> : null}
 					</div>
 				</div>
 			</header>
