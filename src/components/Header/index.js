@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import HeaderUser from './HeaderUser/index'
 import './style.css'
-
+import { endDraggingCard } from '../../actions/dndCard'
+import { endDraggingColumn } from '../../actions/dndColumn'
+import { removeCard, removeColumn } from '../../actions/columns'
 
 class Header extends Component {
 
@@ -11,13 +13,28 @@ class Header extends Component {
 
 		this.state = {
 			'draggingOver': false
-		};
+		}
 	}
 
 	onDrop = () => {
-		this.setState({draggingOver: false});
-		this.props.onDrop();
-	};
+    const {
+      dndCard,
+      dndColumn,
+      endDraggingCard,
+      endDraggingColumn,
+      removeCard,
+      removeColumn
+    } = this.props
+		this.setState({draggingOver: false})
+    if (dndCard.isDragging) {
+      removeCard(dndCard.cardId)
+      endDraggingCard()
+    }
+    if (dndColumn.isDragging) {
+      removeColumn(dndColumn.columnId)
+      endDraggingColumn()
+    }
+	}
 
 	render(){
 		const {dndCard, dndColumn, onExit, isAuthorized} = this.props
@@ -34,15 +51,11 @@ class Header extends Component {
 				onDragEnter = {e => {this.setState({draggingOver: true})}}
 				onDragLeave = {e => {this.setState({draggingOver: false})}}
 				onDrop={this.onDrop}>
-
 				<i className="h-delete-icon fa fa-trash-o" aria-hidden="true"> </i>
-
 				<div className='container'>
 					<div className="h-container">
 						<div className="h-title">Trello</div>
-
 						{isAuthorized ? <HeaderUser onExit={onExit}/> : null}
-
 					</div>
 				</div>
 			</header>
@@ -54,8 +67,17 @@ const mapStoreToProps = store => {
 	return {
     isAuthorized: store.user.isAuthorized,
 		dndCard: store.dndCard,
-    dndColumn: store.dndColumn,
+    dndColumn: store.dndColumn
 	}
 }
 
-export default connect(mapStoreToProps, null)(Header)
+const mapDispatchToProps = dispatch => {
+  return {
+    endDraggingCard: ()=> dispatch(endDraggingCard()),
+    endDraggingColumn: ()=> dispatch(endDraggingColumn()),
+    removeCard: (cardId)=> dispatch(removeCard(cardId)),
+    removeColumn: (columnId) => dispatch(removeColumn(columnId))
+  }
+}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(Header)

@@ -73,3 +73,23 @@ export const moveCardToColumnEnd = ( cardId, columnId ) => {
     }
   }
 }
+
+export const REMOVE_CARD = 'REMOVE_CARD'
+export const removeCard = ( cardId ) => {
+  return {
+    type: REMOVE_CARD,
+    payload: {
+      cardId
+    }
+  }
+}
+
+export const REMOVE_COLUMN = 'REMOVE_COLUMN'
+export const removeColumn = ( columnId ) => {
+  return {
+    type: REMOVE_COLUMN,
+    payload: {
+      columnId
+    }
+  }
+}

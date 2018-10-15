@@ -43,6 +43,12 @@ class Columns extends React.Component {
   }
 
   onDragStart = e => {
+    // disable dnd when name in focus
+    if (this.columnNameField === document.activeElement){
+      e.preventDefault()
+      return
+    }
+
     // check if dragStart fired by child items (cards)
     if (e.target === this.columnNode)
       this.props.startDraggingColumn(this.props.column.id)
@@ -52,7 +58,6 @@ class Columns extends React.Component {
     if (dndColumn.columnId === column.id || !dndColumn.isDragging) return
     this.props.swapColumns(dndColumn.columnId, column.id)
   }
-
   onDragEnd = () => {
     this.props.endDraggingColumn()
   }
@@ -96,7 +101,7 @@ class Columns extends React.Component {
           draggable="true"
           ref={columnNode => {this.columnNode = columnNode}} >
           <header
-            onDragEnter={() => moveCardToColumnStart(dndCard.cardId, column.id)}
+            onDragEnter={() => dndCard.isDragging && moveCardToColumnStart(dndCard.cardId, column.id)}
             onDrop={endDraggingCard}
             className="column-header">
             <input className="column-title"
@@ -112,7 +117,7 @@ class Columns extends React.Component {
             </div>
           </main>
           <footer className="column-footer"
-                  onDragEnter={() => moveCardToColumnEnd(dndCard.cardId, column.id)}
+                  onDragEnter={() => dndCard.isDragging && moveCardToColumnEnd(dndCard.cardId, column.id)}
                   onDrop={endDraggingCard}
           >
             <a href="#0"

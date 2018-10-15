@@ -1,6 +1,6 @@
 import {
   ADD_COLUMN, MOVE_CARD_TO_COLUMN_END,
-  MOVE_CARD_TO_COLUMN_START,
+  MOVE_CARD_TO_COLUMN_START, REMOVE_CARD, REMOVE_COLUMN,
   SAVE_CARD,
   SWAP_CARDS,
   SWAP_COLUMNS,
@@ -135,6 +135,25 @@ export default function columns (store = columnsData, action) {
         .deleteIn([cardColumnIndex, 'cards', cardIndex])
         .updateIn([pushColumnIndex, 'cards'], cardsList => cardsList.push(draggingCard))
         .toJS()
+    }
+    case REMOVE_CARD:
+    {
+      const {cardId} = action.payload
+
+      let cardIndex = -1
+      const cardColumnIndex = immutableStore.findIndex(column => {
+        let tempCardIndex = column.get('cards').findIndex(card => card.get('id') === cardId)
+        if(tempCardIndex > -1) cardIndex = tempCardIndex
+        return tempCardIndex > -1
+      })
+
+      return immutableStore.deleteIn([cardColumnIndex, 'cards', cardIndex]).toJS()
+    }
+    case REMOVE_COLUMN:
+    {
+      const { columnId } = action.payload
+      const columnIndex = immutableStore.findIndex(column => column.get('id') === columnId)
+      return immutableStore.delete(columnIndex).toJS()
     }
     default:
       return store
