@@ -1,12 +1,21 @@
-export const SET_DRAGGING_CARD = 'SET_DRAGGING_CARD';
 
-export const setDraggingCard = (cardIndex, columnIndex) => {
+export const CARD_DRAG_START = 'CARD_DRAG_START';
+export const startDraggingCard = (cardId = '') => {
   return {
-    type: SET_DRAGGING_CARD,
+    type: CARD_DRAG_START,
     payload: {
-      cardIndex,
-      columnIndex,
-      isDragging: cardIndex > 0 && columnIndex > 0
+      cardId,
+      isDragging: true
     }
   }
-};
+}
+
+export const CARD_DRAG_END = 'CARD_DRAG_END'
+export const endDraggingCard = () => {
+  return {
+    type: CARD_DRAG_END,
+    payload: {
+      isDragging: false
+    }
+  }
+}

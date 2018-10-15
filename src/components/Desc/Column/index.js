@@ -4,8 +4,14 @@ import PropTypes from 'prop-types'
 import Card from '../Card/index'
 import { openCardPopup } from '../../../actions/cardPopup'
 import './style.css'
-import { swapColumns, saveColumn } from '../../../actions/columns'
+import {
+  swapColumns,
+  saveColumn,
+  moveCardToColumnEnd,
+  moveCardToColumnStart
+} from '../../../actions/columns'
 import { endDraggingColumn, startDraggingColumn } from '../../../actions/dndColumn'
+import { endDraggingCard } from '../../../actions/dndCard'
 
 class Columns extends React.Component {
   justAdded = false
@@ -32,14 +38,13 @@ class Columns extends React.Component {
     this.props.saveColumn({name: e.target.value})
   }
 
-  // drag and drop cursor fix
-  onDragEnter = e => {
+  prevent = e => {
     e.preventDefault()
   }
 
   onDragStart = e => {
-    // dont fire on drag card
-    // if (e.target.className === 'column')
+    // check if dragStart fired by child items (cards)
+    if (e.target === this.columnNode)
       this.props.startDraggingColumn(this.props.column.id)
   }
   onDragEnter = e => {
@@ -54,14 +59,18 @@ class Columns extends React.Component {
 
   render () {
     const {
+      columnIndex,
       column,
       dndColumn,
+      dndCard,
 
       openNewCardPopup,
       onCardDragStart,
       onCardDragEnd,
       onCardDragEnter,
-      columnIndex,
+      moveCardToColumnStart,
+      moveCardToColumnEnd,
+      endDraggingCard
     } = this.props
 
     const cardsList = column.cards.map((card, index) => {
@@ -74,19 +83,21 @@ class Columns extends React.Component {
         key={card.id}/>
     })
 
-    const isDragging = dndColumn.columnIndex === columnIndex && dndColumn.isDragging
+    const isDragging = dndColumn.columnId === column.id && dndColumn.isDragging
     return (
       <div className="column-wrapper"
+           onDrop={endDraggingCard}
            onDragEnter={this.onDragEnter} >
         <div
           className={`column ${isDragging ? '_dragging':''}`}
-          onDragEnter={e => {e.preventDefault()}}
+          onDragEnter={this.prevent}
           onDragStart={this.onDragStart}
           onDragEnd={this.onDragEnd.bind(this)}
           draggable="true"
-        >
+          ref={columnNode => {this.columnNode = columnNode}} >
           <header
-            onDragEnter={e => (e.preventDefault())}
+            onDragEnter={() => moveCardToColumnStart(dndCard.cardId, column.id)}
+            onDrop={endDraggingCard}
             className="column-header">
             <input className="column-title"
                    type="text"
@@ -101,8 +112,11 @@ class Columns extends React.Component {
             </div>
           </main>
           <footer className="column-footer"
-                  onDragEnter={e => (e.preventDefault())}>
+                  onDragEnter={() => moveCardToColumnEnd(dndCard.cardId, column.id)}
+                  onDrop={endDraggingCard}
+          >
             <a href="#0"
+               draggable="false"
                onClick={e => {
                  e.preventDefault()
                  openNewCardPopup()
@@ -119,7 +133,8 @@ class Columns extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     column: state.columns[ownProps.columnIndex],
-    dndColumn: state.dndColumn
+    dndColumn: state.dndColumn,
+    dndCard: state.dndCard
   }
 }
 
@@ -129,7 +144,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     saveColumn: (column) => dispatch(saveColumn(ownProps.columnIndex, column)),
     startDraggingColumn: (columnId) => dispatch(startDraggingColumn(columnId)),
     endDraggingColumn: () => dispatch(endDraggingColumn()),
-    swapColumns: (draggedColumnId, overColumnId) => dispatch(swapColumns(draggedColumnId, overColumnId))
+    swapColumns: (draggedColumnId, overColumnId) => dispatch(swapColumns(draggedColumnId, overColumnId)),
+    moveCardToColumnStart: (cardId, columnId) => dispatch(moveCardToColumnStart(cardId, columnId)),
+    moveCardToColumnEnd: (cardId, columnId) => dispatch(moveCardToColumnEnd(cardId, columnId)),
+    endDraggingCard: () => dispatch(endDraggingCard())
   }
 }
 
@@ -138,7 +156,10 @@ Columns.proptypes = {
   columnIndex: PropTypes.number.isRequired,
   saveColumn: PropTypes.func.isRequired,
   openNewCardPopup: PropTypes.func.isRequired,
-  justAdded: PropTypes.bool.isRequired
+  justAdded: PropTypes.bool.isRequired,
+  moveCardToColumnStart: PropTypes.func.isRequired,
+  moveCardToColumnEnd: PropTypes.func.isRequired,
+  endDraggingCard: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Columns)

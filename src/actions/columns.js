@@ -40,3 +40,36 @@ export const swapColumns = ( draggedColumnId, overColumnId ) => {
    }
  }
 }
+
+export const SWAP_CARDS = 'SWAP_CARDS'
+export const swapCards = ( draggingCardId, overCardId ) => {
+  return {
+    type: SWAP_CARDS,
+    payload: {
+      draggingCardId,
+      overCardId
+    }
+  }
+}
+
+export const MOVE_CARD_TO_COLUMN_START = 'MOVE_CARD_TO_COLUMN_START'
+export const moveCardToColumnStart = ( cardId, columnId ) => {
+  return {
+    type: MOVE_CARD_TO_COLUMN_START,
+    payload: {
+      cardId,
+      columnId
+    }
+  }
+}
+
+export const MOVE_CARD_TO_COLUMN_END = 'MOVE_CARD_TO_COLUMN_END'
+export const moveCardToColumnEnd = ( cardId, columnId ) => {
+  return {
+    type: MOVE_CARD_TO_COLUMN_END,
+    payload: {
+      cardId,
+      columnId
+    }
+  }
+}

@@ -1,17 +1,23 @@
-import { SET_DRAGGING_CARD } from '../actions/dndCard'
+import { CARD_DRAG_END, CARD_DRAG_START } from '../actions/dndCard'
+import { fromJS } from 'immutable'
 
 const initialStore = {
-  cardIndex: '',
-  columnIndex: '',
+  cardId: '',
   isDragging: false
 }
 
 export default function dndCard( store = initialStore, action) {
+  const immutableStore = fromJS(store)
   switch (action.type){
-    case SET_DRAGGING_CARD:
-      return {
-        ...action.payload
-      }
+    case CARD_DRAG_START:
+      return immutableStore.merge({
+        cardId: action.payload.cardId,
+        isDragging: action.payload.isDragging
+      }).toJS()
+    case CARD_DRAG_END:
+      return immutableStore.merge({
+        isDragging: action.payload.isDragging
+      }).toJS()
     default:
       return store;
   }
