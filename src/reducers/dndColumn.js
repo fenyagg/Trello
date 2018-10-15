@@ -1,7 +1,7 @@
 import { COLUMN_DRAG_START, COLUMN_DRAG_END } from '../actions/dndColumn'
 
 const initialStore = {
-  columnIndex: -1,
+  columnId: '',
   isDragging: false
 }
 

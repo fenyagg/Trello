@@ -5,6 +5,10 @@ import connect from 'react-redux/es/connect/connect'
 
 class Cards extends React.Component {
 
+  onDragEnter(e) {
+    e.preventDefault()
+  }
+
   render () {
     const {card,
       columnIndex,
@@ -21,12 +25,12 @@ class Cards extends React.Component {
     return (
       <article
         className={cardClass.join(' ')}
-        onDragEnter={onDragEnter}
+        onDragEnter={e => this.onDragEnter.bind(this, e)}
         onClick={openCardPopup.bind(this)}
       >
         <div className="card"
-             onDragStart={onCardDragStart}
-             onDragEnd={onDragEnd}
+             /*onDragStart={onCardDragStart}*/
+             /*onDragEnd={onDragEnd}*/
              draggable="true"
         >
           <div className="card-title">{card.title}</div>

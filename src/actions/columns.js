@@ -30,13 +30,13 @@ export const addColumn = (nextColumn = {}) => {
   }
 }
 
-export const CHANGE_COLUMN_POSITION = 'CHANGE_COLUMN_POSITION'
-export const changeColumnPosition = ( columnIndex, overColumnIndex ) => {
+export const SWAP_COLUMNS = 'SWAP_COLUMNS'
+export const swapColumns = ( draggedColumnId, overColumnId ) => {
  return {
-   type: CHANGE_COLUMN_POSITION,
+   type: SWAP_COLUMNS,
    payload: {
-     columnIndex,
-     overColumnIndex
+     draggedColumnId,
+     overColumnId
    }
  }
 }
