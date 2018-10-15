@@ -1,57 +1,44 @@
 import { ADD_COLUMN, SAVE_CARD, SWAP_COLUMNS, UPDATE_COLUMN } from './../actions/columns'
 import columnsData from '../data/columns'
-import update from 'immutability-helper'
-import { List, fromJS } from 'immutable'
+import { fromJS } from 'immutable'
 
 export default function columns (store = columnsData, action) {
+  const immutableStore = fromJS(store)
+
   switch (action.type) {
     case SAVE_CARD:
     {
       const {columnIndex, cardIndex, nextCard} = action.payload
-
       if (columnIndex > -1 &&  cardIndex > -1) {
-        return update(store, {
-          [columnIndex]: {
-            'cards': {
-              [cardIndex]: {
-                $merge: nextCard
-              }
-            }
-          }
-        })
+        return immutableStore.mergeIn(
+          [columnIndex, 'cards', cardIndex],
+          nextCard
+        ).toJS()
       } else {
-        return update(store, {
-          [columnIndex]: {
-            'cards': {
-              $push: [nextCard]
-            }
-          }
-        })
+        return immutableStore.updateIn(
+          [columnIndex, 'cards'],
+          arr => arr.push(nextCard)
+        ).toJS()
       }
     }
     case UPDATE_COLUMN:
     {
       const {columnIndex, nextColumn} = action.payload
       if (columnIndex > -1) {
-        return update(store, {
-          [columnIndex]: {
-            $merge: nextColumn
-          }
-        })
+        return immutableStore.mergeIn(
+          [columnIndex], nextColumn
+        ).toJS()
       } else {
         return store
       }
     }
     case ADD_COLUMN:
     {
-      return update(store, {
-        $push: [action.payload]
-      })
+      return immutableStore.push(action.payload).toJS()
     }
     case SWAP_COLUMNS:
     {
       const { draggedColumnId, overColumnId } = action.payload
-      const immutableStore = fromJS(store)
 
       const draggedColumnIndex = immutableStore.findIndex(column => {
         return column.get('id') === draggedColumnId
