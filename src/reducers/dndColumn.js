@@ -5,8 +5,8 @@ const initialStore = {
   isDragging: false
 }
 
-export default function dndColumn( store = initialStore, action) {
-  switch (action.type){
+export default function dndColumn (store = initialStore, action) {
+  switch (action.type) {
     case COLUMN_DRAG_START:
       return {
         ...store,
@@ -18,6 +18,6 @@ export default function dndColumn( store = initialStore, action) {
         ...action.payload
       }
     default:
-      return store;
+      return store
   }
 }

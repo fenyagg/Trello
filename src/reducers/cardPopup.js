@@ -23,5 +23,4 @@ export default function cardPopup (store = initialStore, action) {
     default:
       return store
   }
-
 }

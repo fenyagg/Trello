@@ -31,18 +31,18 @@ export const addColumn = (nextColumn = {}) => {
 }
 
 export const SWAP_COLUMNS = 'SWAP_COLUMNS'
-export const swapColumns = ( draggedColumnId, overColumnId ) => {
- return {
-   type: SWAP_COLUMNS,
-   payload: {
-     draggedColumnId,
-     overColumnId
-   }
- }
+export const swapColumns = (draggedColumnId, overColumnId) => {
+  return {
+    type: SWAP_COLUMNS,
+    payload: {
+      draggedColumnId,
+      overColumnId
+    }
+  }
 }
 
 export const SWAP_CARDS = 'SWAP_CARDS'
-export const swapCards = ( draggingCardId, overCardId ) => {
+export const swapCards = (draggingCardId, overCardId) => {
   return {
     type: SWAP_CARDS,
     payload: {
@@ -53,7 +53,7 @@ export const swapCards = ( draggingCardId, overCardId ) => {
 }
 
 export const MOVE_CARD_TO_COLUMN_START = 'MOVE_CARD_TO_COLUMN_START'
-export const moveCardToColumnStart = ( cardId, columnId ) => {
+export const moveCardToColumnStart = (cardId, columnId) => {
   return {
     type: MOVE_CARD_TO_COLUMN_START,
     payload: {
@@ -64,7 +64,7 @@ export const moveCardToColumnStart = ( cardId, columnId ) => {
 }
 
 export const MOVE_CARD_TO_COLUMN_END = 'MOVE_CARD_TO_COLUMN_END'
-export const moveCardToColumnEnd = ( cardId, columnId ) => {
+export const moveCardToColumnEnd = (cardId, columnId) => {
   return {
     type: MOVE_CARD_TO_COLUMN_END,
     payload: {
@@ -75,7 +75,7 @@ export const moveCardToColumnEnd = ( cardId, columnId ) => {
 }
 
 export const REMOVE_CARD = 'REMOVE_CARD'
-export const removeCard = ( cardId ) => {
+export const removeCard = (cardId) => {
   return {
     type: REMOVE_CARD,
     payload: {
@@ -85,7 +85,7 @@ export const removeCard = ( cardId ) => {
 }
 
 export const REMOVE_COLUMN = 'REMOVE_COLUMN'
-export const removeColumn = ( columnId ) => {
+export const removeColumn = (columnId) => {
   return {
     type: REMOVE_COLUMN,
     payload: {

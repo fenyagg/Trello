@@ -15,8 +15,8 @@ export default function columns (store = columnsData, action) {
   switch (action.type) {
     case SAVE_CARD:
     {
-      const {columnIndex, cardIndex, nextCard} = action.payload
-      if (columnIndex > -1 &&  cardIndex > -1) {
+      const { columnIndex, cardIndex, nextCard } = action.payload
+      if (columnIndex > -1 && cardIndex > -1) {
         return immutableStore.mergeIn(
           [columnIndex, 'cards', cardIndex],
           nextCard
@@ -30,7 +30,7 @@ export default function columns (store = columnsData, action) {
     }
     case UPDATE_COLUMN:
     {
-      const {columnIndex, nextColumn} = action.payload
+      const { columnIndex, nextColumn } = action.payload
       if (columnIndex > -1) {
         return immutableStore.mergeIn(
           [columnIndex], nextColumn
@@ -58,10 +58,10 @@ export default function columns (store = columnsData, action) {
       const draggedOverColumn = immutableStore.get(overColumnIndex)
 
       const nextStore = immutableStore
-                        .delete(draggedColumnIndex)
-                        .insert(draggedColumnIndex, draggedOverColumn)
-                        .delete(overColumnIndex)
-                        .insert(overColumnIndex, draggedColumn)
+        .delete(draggedColumnIndex)
+        .insert(draggedColumnIndex, draggedOverColumn)
+        .delete(overColumnIndex)
+        .insert(overColumnIndex, draggedColumn)
 
       return nextStore.toJS()
     }
@@ -73,16 +73,16 @@ export default function columns (store = columnsData, action) {
       let overCardIndex = -1
 
       const draggingCardColumnIndex = immutableStore.findIndex(column => {
-        let tempCardIndex = column.get("cards").findIndex(card => {
-          return card.get("id") === draggingCardId
+        let tempCardIndex = column.get('cards').findIndex(card => {
+          return card.get('id') === draggingCardId
         })
         if (tempCardIndex > -1) draggingCardIndex = tempCardIndex
         return tempCardIndex > -1
       })
 
       const overCardColumnIndex = immutableStore.findIndex(column => {
-        let tempCardIndex = column.get("cards").findIndex(card => {
-          return card.get("id") === overCardId
+        let tempCardIndex = column.get('cards').findIndex(card => {
+          return card.get('id') === overCardId
         })
         if (tempCardIndex > -1) overCardIndex = tempCardIndex
         return tempCardIndex > -1
@@ -96,17 +96,17 @@ export default function columns (store = columnsData, action) {
           return cardsList.splice(overCardIndex, 0, draggingCard)
         })
 
-     return nextStore.toJS()
+      return nextStore.toJS()
     }
     case MOVE_CARD_TO_COLUMN_START:
     {
-      const {cardId, columnId} = action.payload
+      const { cardId, columnId } = action.payload
       const pushColumnIndex = immutableStore.findIndex(column => column.get('id') === columnId)
 
       let cardIndex = -1
       const cardColumnIndex = immutableStore.findIndex(column => {
         let tempCardIndex = column.get('cards').findIndex(card => card.get('id') === cardId)
-        if(tempCardIndex > -1) cardIndex = tempCardIndex
+        if (tempCardIndex > -1) cardIndex = tempCardIndex
         return tempCardIndex > -1
       })
 
@@ -119,13 +119,13 @@ export default function columns (store = columnsData, action) {
     }
     case MOVE_CARD_TO_COLUMN_END:
     {
-      const {cardId, columnId} = action.payload
+      const { cardId, columnId } = action.payload
       const pushColumnIndex = immutableStore.findIndex(column => column.get('id') === columnId)
 
       let cardIndex = -1
       const cardColumnIndex = immutableStore.findIndex(column => {
         let tempCardIndex = column.get('cards').findIndex(card => card.get('id') === cardId)
-        if(tempCardIndex > -1) cardIndex = tempCardIndex
+        if (tempCardIndex > -1) cardIndex = tempCardIndex
         return tempCardIndex > -1
       })
 
@@ -138,12 +138,12 @@ export default function columns (store = columnsData, action) {
     }
     case REMOVE_CARD:
     {
-      const {cardId} = action.payload
+      const { cardId } = action.payload
 
       let cardIndex = -1
       const cardColumnIndex = immutableStore.findIndex(column => {
         let tempCardIndex = column.get('cards').findIndex(card => card.get('id') === cardId)
-        if(tempCardIndex > -1) cardIndex = tempCardIndex
+        if (tempCardIndex > -1) cardIndex = tempCardIndex
         return tempCardIndex > -1
       })
 

@@ -18,8 +18,8 @@ const initialStore = {
   isAuthorized: true
 }
 
-export default function user( store = initialStore, action) {
-  switch (action.type){
+export default function user (store = initialStore, action) {
+  switch (action.type) {
     case USER_LOGIN:
       return {
         ...store,
@@ -37,6 +37,6 @@ export default function user( store = initialStore, action) {
         isAuthorized: true
       }
     default:
-      return store;
+      return store
   }
 }

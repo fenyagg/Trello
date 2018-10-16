@@ -7,8 +7,7 @@ import PropTypes from 'prop-types'
 import { swapCards } from '../../../actions/columns'
 
 class Cards extends React.PureComponent {
-
-  onDragEnter(e) {
+  onDragEnter (e) {
     const { card, dndCard, swapCards } = this.props
 
     if (!dndCard.isDragging || dndCard.cardId === card.id) return
@@ -39,9 +38,9 @@ class Cards extends React.PureComponent {
         onDrop={endDraggingCard}
       >
         <div className="card"
-             onDragStart={() => startDraggingCard(card.id)}
-             onDragEnd={endDraggingCard}
-             draggable="true"
+          onDragStart={() => startDraggingCard(card.id)}
+          onDragEnd={endDraggingCard}
+          draggable="true"
         >
           <div className="card-title">{card.title}</div>
         </div>
@@ -63,7 +62,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       ownProps.columnIndex,
       ownProps.cardIndex
     )),
-    startDraggingCard: (cardId)=> dispatch(startDraggingCard(cardId)),
+    startDraggingCard: (cardId) => dispatch(startDraggingCard(cardId)),
     endDraggingCard: () => dispatch(endDraggingCard()),
     swapCards: (draggingCardId, overCardId) => dispatch(swapCards(draggingCardId, overCardId))
   }
@@ -74,7 +73,8 @@ Cards.propTypes = {
   dndCard: PropTypes.object.isRequired,
   openCardPopup: PropTypes.func.isRequired,
   startDraggingCard: PropTypes.func.isRequired,
-  endDraggingCard: PropTypes.func.isRequired
+  endDraggingCard: PropTypes.func.isRequired,
+  swapCards: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cards)

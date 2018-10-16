@@ -3,10 +3,10 @@ import { keys as _keys } from 'lodash/object'
 
 export class FieldValidator {
    validateFunctions = {
-    required: field => (!!field.value.trim()),
-    email: field => /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/.test(field.value),
-    minLength: (field, params) => (!field.value || field.value.trim().length >= params)
-  }
+     required: field => (!!field.value.trim()),
+     email: field => /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/.test(field.value),
+     minLength: (field, params) => (!field.value || field.value.trim().length >= params)
+   }
 
   validateMessages = {
     default: 'field is not valid',
@@ -18,13 +18,13 @@ export class FieldValidator {
   getValidMessage = (ruleName, params) => {
     let message = this.validateMessages[ruleName] || this.validateMessages['default']
     params.forEach((param, i) => {
-      message = message.replace("{"+i+"}", param);
-    });
+      message = message.replace('{' + i + '}', param)
+    })
     return message
   }
 
-  validate (field, rules, callbalck = ()=>{}) {
-     if (!rules.length) return
+  validate (field, rules, callbalck = () => {}) {
+    if (!rules.length) return
 
     let isValid = true
     const errors = []
@@ -34,7 +34,7 @@ export class FieldValidator {
         ? rule
         : (_isObject(rule) ? _keys(rule)[0] : '')
 
-      if ( !this.validateFunctions[ruleName]) {
+      if (!this.validateFunctions[ruleName]) {
         console.warn(`${rule} is not defined validate function`)
         return false
       }

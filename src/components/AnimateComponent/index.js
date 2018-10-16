@@ -3,7 +3,6 @@ import './style.css'
 import PropTypes from 'prop-types'
 
 class AnimateComponent extends React.Component {
-
   STATUS_MOUNT_START = 0
   STATUS_MOUNT_END = 1
   STATUS_UNMOUNT_START = 2
@@ -26,11 +25,11 @@ class AnimateComponent extends React.Component {
       [this.STATUS_MOUNT_START]: `${animationFunction}-mount-start`,
       [this.STATUS_MOUNT_END]: `${animationFunction}-mount-end`,
       [this.STATUS_UNMOUNT_START]: `${animationFunction}-unmount-start`,
-      [this.STATUS_UNMOUNT_END]: `${animationFunction}-unmount-end`,
+      [this.STATUS_UNMOUNT_END]: `${animationFunction}-unmount-end`
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     const {
       isMounted,
       mountDelay = 0,
@@ -38,7 +37,7 @@ class AnimateComponent extends React.Component {
     } = this.props
 
     // no mount props changed
-    if ( prevProps.isMounted === isMounted) return
+    if (prevProps.isMounted === isMounted) return
 
     // clear timeout
     if (this.renderTimeOutId) clearTimeout(this.renderTimeOutId)
@@ -74,14 +73,14 @@ class AnimateComponent extends React.Component {
       )
       this.renderTimeOutId = setTimeout(
         () => {
-          this.setState({shouldRender: false})
+          this.setState({ shouldRender: false })
         },
         unmountDelay
       )
     }
   }
 
-  render() {
+  render () {
     const {
       isMounted,
       mountDelay,
@@ -89,17 +88,18 @@ class AnimateComponent extends React.Component {
       style = {},
       className = '',
       children,
-      ...props } = this.props
+      ...props
+    } = this.props
     const wrapperClass = `${className} animate-component-container ${this.classList[this.state.status]}`
-    const wrapperStyle = { ...style, transitionDuration: this.state.transition/1000+'s'}
+    const wrapperStyle = { ...style, transitionDuration: this.state.transition / 1000 + 's' }
 
     return (
-      this.state.shouldRender ?
-      (
-        <div style={wrapperStyle} className={wrapperClass} {...props}>
-          {children}
-        </div>
-      ) : null
+      this.state.shouldRender
+        ? (
+          <div style={wrapperStyle} className={wrapperClass} {...props}>
+            {children}
+          </div>
+        ) : null
     )
   }
 }

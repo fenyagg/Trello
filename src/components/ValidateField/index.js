@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { omit as _omit} from 'lodash/object'
+import { omit as _omit } from 'lodash/object'
 import fieldValidator from './FieldValidator'
 
 class ValidateField extends PureComponent {
@@ -31,7 +31,7 @@ class ValidateField extends PureComponent {
   wasChanged = false
   rules = []
 
-  validate() {
+  validate () {
     return fieldValidator.validate(this.field.current, this.rules, (isValid, errors) => {
       this.setState({
         ...this.state,
@@ -41,13 +41,13 @@ class ValidateField extends PureComponent {
     })
   }
 
-  onInput(e) {
+  onInput (e) {
     this.value = this.field.current.value
     if (this.wasChanged || this.state.isValid !== undefined) this.validate()
-    if(this.props.onChange) this.props.onChange(e, this.isValid)
+    if (this.props.onChange) this.props.onChange(e, this.isValid)
   }
 
-  onBlur(e) {
+  onBlur (e) {
     if (e.currentTarget.value === this.previewValue) return
     this.previewValue = e.currentTarget.value
     this.wasChanged = true
@@ -58,7 +58,7 @@ class ValidateField extends PureComponent {
     const { component, ...props } = this.props
     const wasValidate = this.state.isValid !== undefined
 
-    let fieldProps = {...props}
+    let fieldProps = { ...props }
     fieldProps.onInput = e => this.onInput(e)
     fieldProps.onBlur = e => this.onBlur(e)
 
@@ -81,7 +81,10 @@ class ValidateField extends PureComponent {
 
 ValidateField.propTypes = {
   validRules: PropTypes.array,
-  component: PropTypes.string.isRequired
+  component: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  type: PropTypes.string.isRequired,
+  onChange: PropTypes.func
 }
 
 export default ValidateField

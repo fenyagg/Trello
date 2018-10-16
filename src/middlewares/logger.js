@@ -1,8 +1,8 @@
 
 export const logger = store => next => action => {
-	const result = next(action);
+  const result = next(action)
 
-	//console.log('logger', action);
+  // console.log('logger', action);
 
-	return result;
-};
+  return result
+}

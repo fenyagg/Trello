@@ -20,8 +20,9 @@ class CardDetail extends React.Component {
 
   componentDidMount (prevProps, prevState) {
     // autofocus on title in new item
-    if (this.props.cardIndex < 0)
+    if (this.props.cardIndex < 0) {
       this.titleInput.current.focus()
+    }
   }
 
   textareaAutoHeight = el => {
@@ -35,9 +36,9 @@ class CardDetail extends React.Component {
 
   saveCard = (e) => {
     e.preventDefault()
-    const {columns, closeCardPopup, columnIndex, cardIndex} = this.props
+    const { columns, closeCardPopup, columnIndex, cardIndex } = this.props
     const card = columns[columnIndex]['cards'][cardIndex]
-    const nextCard ={
+    const nextCard = {
       'title': this.titleInput.current.value,
       'text': this.descriptionInput.current.value
     }
@@ -47,7 +48,7 @@ class CardDetail extends React.Component {
   }
 
   render () {
-    const {columns, closeCardPopup, columnIndex, cardIndex} = this.props
+    const { columns, closeCardPopup, columnIndex, cardIndex } = this.props
     const card = Object.assign({
       'title': 'Новая задача',
       'text': ''
@@ -56,14 +57,14 @@ class CardDetail extends React.Component {
     return (
       <div className="popup-wrapper">
         <div onClick={closeCardPopup}
-             className="popup-shadow"> </div>
+          className="popup-shadow"></div>
 
         <form onSubmit={e => this.saveCard(e, this.context.store.cardPopup)}
-              className="card-detail">
+          className="card-detail">
           <button onClick={closeCardPopup}
-                  type="button"
-                  className="close card-detail__close"
-                  aria-label="Close">
+            type="button"
+            className="close card-detail__close"
+            aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <header className="card-detail__header">
@@ -81,7 +82,7 @@ class CardDetail extends React.Component {
             placeholder="Описание задачи"
             className="card-detail__textarea"
             onChange={this.changeCardText}
-            defaultValue={card.text} />
+            defaultValue={card.text}/>
 
           <footer className="card-detail__footer">
             <button
@@ -110,15 +111,17 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(closeCardPopupAction())
     },
     saveCardToStore: (columnIndex, cardIndex, nextCard) => {
-      dispatch(
-        saveCard(
-          columnIndex,
-          cardIndex,
-          nextCard
-        )
-      )
+      dispatch(saveCard(columnIndex, cardIndex, nextCard))
     }
   }
+}
+
+CardDetail.propTypes = {
+  columns: PropTypes.array.isRequired,
+  columnIndex: PropTypes.number.isRequired,
+  cardIndex: PropTypes.number.isRequired,
+  closeCardPopup: PropTypes.func.isRequired,
+  saveCardToStore: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardDetail)

@@ -1,27 +1,20 @@
-import React from 'react';
+import React from 'react'
 import connect from 'react-redux/es/connect/connect'
 import { register } from '../../../actions/user'
 import PropTypes from 'prop-types'
 import ValidateField from '../../ValidateField'
 
 class RegisterForm extends React.Component {
-
-	fields = {}
+  fields = {}
   isFormValid = true
 
-	onChange = (name, value) => {
-		let newState = {};
-		newState[name] = value;
-		this.setState(newState);
-	};
-
-	onSubmit = (e) => {
-		e.preventDefault();
+  onSubmit = (e) => {
+    e.preventDefault()
 
     this.isFormValid = true
-    for ( let fieldName in this.fields ) {
+    for (let fieldName in this.fields) {
       const fieldComponent = this.fields[fieldName]
-      if (fieldComponent.isValid === false || !fieldComponent.validate()){
+      if (fieldComponent.isValid === false || !fieldComponent.validate()) {
         this.isFormValid = false
       }
     }
@@ -32,11 +25,11 @@ class RegisterForm extends React.Component {
         this.fields['password']['value']
       )
     }
-	};
+  }
 
-	render(){
-		return (
-			<form className="form auth-form" onSubmit={this.onSubmit}>
+  render () {
+    return (
+      <form className="form auth-form" onSubmit={this.onSubmit}>
         <ValidateField
           component='input'
           type="text"
@@ -44,7 +37,7 @@ class RegisterForm extends React.Component {
           placeholder="Email"
           defaultValue=""
           validRules={['required', 'email']}
-          ref={field => this.fields['email'] = field}
+          ref={field => (this.fields['email'] = field)}
         />
 
         <ValidateField
@@ -55,25 +48,25 @@ class RegisterForm extends React.Component {
           defaultValue=""
           validRules={[
             'required',
-            {'minLength': 6}
+            { 'minLength': 6 }
           ]}
-          ref={field => this.fields['password'] = field}
+          ref={field => (this.fields['password'] = field)}
         />
 
-				<button type="submit" className="btn btn-primary">Регистрация</button>
-			</form>
-		)
-	}
+        <button type="submit" className="btn btn-primary">Регистрация</button>
+      </form>
+    )
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    register: (email, password) => dispatch(register({email, password})),
-  };
-};
+    register: (email, password) => dispatch(register({ email, password }))
+  }
+}
 
-RegisterForm.proptypes = {
+RegisterForm.propTypes = {
   register: PropTypes.func.isRequired
 }
 
-export default  connect(null, mapDispatchToProps)(RegisterForm)
+export default connect(null, mapDispatchToProps)(RegisterForm)

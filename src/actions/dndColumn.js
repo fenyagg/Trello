@@ -1,5 +1,5 @@
 
-export const COLUMN_DRAG_START = 'COLUMN_DRAG_START';
+export const COLUMN_DRAG_START = 'COLUMN_DRAG_START'
 export const startDraggingColumn = (columnId = '') => {
   return {
     type: COLUMN_DRAG_START,

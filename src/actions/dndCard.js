@@ -1,5 +1,5 @@
 
-export const CARD_DRAG_START = 'CARD_DRAG_START';
+export const CARD_DRAG_START = 'CARD_DRAG_START'
 export const startDraggingCard = (cardId = '') => {
   return {
     type: CARD_DRAG_START,

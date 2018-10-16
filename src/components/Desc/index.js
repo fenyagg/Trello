@@ -29,87 +29,87 @@ class Desc extends Component {
         'draggedCardColumnIndex': -1,
         'draggedCardIndex': -1,
         'draggedColumn': -1
-      });
+      })
     },
 
     onDragEnter: (overColumnIndex, overCardIndex) => {
       if (this.state.draggedCardColumnIndex === -1 ||
         this.state.draggedCardIndex === -1 ||
         (this.state.draggedCardColumnIndex === overColumnIndex &&
-          this.state.draggedCardIndex === overCardIndex))  return true;
+          this.state.draggedCardIndex === overCardIndex)) return true
 
-      this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, overCardIndex);
+      this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, overCardIndex)
     },
     onDragStart: (columnIndex, cardIndex) => {
       this.setState({
         'draggedCardColumnIndex': columnIndex,
-        'draggedCardIndex': cardIndex,
-      });
+        'draggedCardIndex': cardIndex
+      })
     },
     onEnterColumn: (columnIndex, position) => {
-      this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, position);
+      this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, position)
     },
-    changeCardPosition(newColumn, newIndex){
-      if ( (this.state.draggedCardColumnIndex === -1 &&
+    changeCardPosition (newColumn, newIndex) {
+      if ((this.state.draggedCardColumnIndex === -1 &&
         this.state.draggedCardIndex === -1) ||
         (this.state.draggedCardColumnIndex === newColumn &&
           this.state.draggedCardIndex === newIndex)
-      ) return;
+      ) return
 
-      let cloneColumns = clone(this.state.columns);
+      let cloneColumns = clone(this.state.columns)
 
-      newIndex = newIndex > cloneColumns[newColumn]['cards'].length-1 ? cloneColumns[newColumn]['cards'].length-1 : newIndex;
-      newIndex = newIndex < 0 ? 0 : newIndex;
+      newIndex = newIndex > cloneColumns[newColumn]['cards'].length - 1 ? cloneColumns[newColumn]['cards'].length - 1 : newIndex
+      newIndex = newIndex < 0 ? 0 : newIndex
 
       // cut dragged card
-      let draggedCard = cloneColumns[this.state.draggedCardColumnIndex]['cards'].splice(this.state.draggedCardIndex, 1)[0];
+      let draggedCard = cloneColumns[this.state.draggedCardColumnIndex]['cards'].splice(this.state.draggedCardIndex, 1)[0]
 
       // put in new column
-      cloneColumns[newColumn]['cards'].splice(newIndex, 0, draggedCard);
+      cloneColumns[newColumn]['cards'].splice(newIndex, 0, draggedCard)
 
       this.setState({
         'draggedCardColumnIndex': newColumn,
         'draggedCardIndex': newIndex,
         'columns': cloneColumns
-      });
+      })
     }
   };
 
   columnDragAndDrop = {
     onDragEnd: () => {
       this.setState({
-        'draggedColumn': -1,
-      });
+        'draggedColumn': -1
+      })
     },
     onDragStart: (columnIndex) => {
       this.setState({
-        'draggedColumn': columnIndex,
-      });
+        'draggedColumn': columnIndex
+      })
     },
     onDragEnter: (overColumnIndex) => {
       if (this.state.draggedColumn === -1 ||
-        this.state.draggedColumn === overColumnIndex )  return true;
+        this.state.draggedColumn === overColumnIndex) return true
 
       // calc new index
-      let newIndex = overColumnIndex; // + posDiff;
-      newIndex = newIndex > this.state.columns.length-1 ? this.state.columns.length-1 : newIndex;
-      newIndex = newIndex < 0 ? 0 : newIndex;
+      let newIndex = overColumnIndex // + posDiff;
+      newIndex = newIndex > this.state.columns.length - 1 ? this.state.columns.length - 1 : newIndex
+      newIndex = newIndex < 0 ? 0 : newIndex
 
-      if (newIndex === this.state.draggedColumn ) return true;
+      if (newIndex === this.state.draggedColumn) return true
 
-      let cloneColumns = clone(this.state.columns);
+      let cloneColumns = clone(this.state.columns)
 
       // cut dragged column
-      let draggedColumn = cloneColumns.splice(this.state.draggedColumn, 1)[0];
+      let draggedColumn = cloneColumns.splice(this.state.draggedColumn, 1)[0]
 
       // put column
-      cloneColumns.splice(newIndex, 0, draggedColumn);
+      cloneColumns.splice(newIndex, 0, draggedColumn)
 
       this.setState({
         columns: cloneColumns,
         draggedColumn: newIndex,
         cards: []
-      });
+      })
     }
   };
 
@@ -123,7 +123,7 @@ class Desc extends Component {
   }
 
   render () {
-    const { cardPopup, columns} = this.props
+    const { cardPopup, columns } = this.props
 
     return (
       <React.Fragment>
@@ -158,8 +158,8 @@ class Desc extends Component {
           })}
 
           <a href="#0"
-             onClick={this.addColumn.bind(this)}
-             className="add-column-link">
+            onClick={this.addColumn.bind(this)}
+            className="add-column-link">
             + Добавить еще 1 колонку
           </a>
         </div>
@@ -182,7 +182,9 @@ function mapDispatchToProps (dispatch) {
 }
 
 Desc.propTypes = {
-  cardPopup: PropTypes.object
+  cardPopup: PropTypes.object,
+  columns: PropTypes.array.isRequired,
+  addColumn: PropTypes.func.isRequired
 }
 
 export default connect(

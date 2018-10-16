@@ -6,9 +6,9 @@ const initialStore = {
   isDragging: false
 }
 
-export default function dndCard( store = initialStore, action) {
+export default function dndCard (store = initialStore, action) {
   const immutableStore = fromJS(store)
-  switch (action.type){
+  switch (action.type) {
     case CARD_DRAG_START:
       return immutableStore.merge({
         cardId: action.payload.cardId,
@@ -19,6 +19,6 @@ export default function dndCard( store = initialStore, action) {
         isDragging: action.payload.isDragging
       }).toJS()
     default:
-      return store;
+      return store
   }
 }
