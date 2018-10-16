@@ -6,8 +6,7 @@ describe('auth form shown', function () {
     onExit: () => {}
   }
   it('should render auth form', function () {
-
-    const authFormComponent = shallow(<HeaderUser {...props}/>);
+    const authFormComponent = shallow(<HeaderUser {...props}/>)
 
     expect(authFormComponent.find('.header-user__exit').text()).toEqual('Выход')
   })

@@ -6,5 +6,13 @@ module.exports = {
     "standard",
     "plugin:react/recommended"
   ],
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "env": {
+    "jest": true
+  },
+  "globals": {
+    "shallow": true,
+    "render": true,
+    "mount": true
+  }
 };

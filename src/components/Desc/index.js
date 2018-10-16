@@ -139,7 +139,7 @@ class Desc extends Component {
         <div className="columns-list">
 
           {columns.map((column, index) => {
-            return 	<Column
+            return <Column
               key={column.id}
               columnIndex={index}
               onCardDragStart = {this.cardDragAndDrop.onDragStart.bind(this, index)}
