@@ -1,6 +1,6 @@
 import { USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './../actions/user'
 
-const initialClearStore = {
+const initialClearUserStore = {
   id: '',
   name: '',
   secondName: '',
@@ -9,7 +9,7 @@ const initialClearStore = {
   isAuthorized: false
 }
 
-const initialStore = {
+const initialUserStore = {
   id: '1',
   name: 'Сильвестр',
   secondName: 'Сталоне',
@@ -18,7 +18,7 @@ const initialStore = {
   isAuthorized: true
 }
 
-export default function user (store = initialStore, action) {
+export default function user (store = initialUserStore, action) {
   switch (action.type) {
     case USER_LOGIN:
       return {
@@ -28,7 +28,7 @@ export default function user (store = initialStore, action) {
       }
     case USER_LOGOUT:
       return {
-        ...initialClearStore
+        ...initialClearUserStore
       }
     case USER_REGISTER:
       return {

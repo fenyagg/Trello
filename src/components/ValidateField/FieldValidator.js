@@ -45,7 +45,7 @@ export class FieldValidator {
       }
     })
     // set field valid/invalid
-    field.setCustomValidity(errors.length ? ' ' : '')
+    field.setCustomValidity && field.setCustomValidity(errors.length ? ' ' : '')
     callbalck(isValid, errors)
 
     return isValid

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { omit as _omit } from 'lodash/object'
 import fieldValidator from './FieldValidator'
 
 class ValidateField extends PureComponent {
@@ -55,16 +54,16 @@ class ValidateField extends PureComponent {
   }
 
   render () {
-    const { component, ...props } = this.props
+    const { component, validRules, className = '', ...fieldProps } = this.props
     const wasValidate = this.state.isValid !== undefined
 
-    let fieldProps = { ...props }
     fieldProps.onInput = e => this.onInput(e)
     fieldProps.onBlur = e => this.onBlur(e)
 
     fieldProps.ref = this.field
-
-    fieldProps = _omit(fieldProps, ['validRules'])
+    const additionalClassName = this.state.isValid === true ? 'is-valid'
+      : this.state.isValid === false ? 'is-invalid' : ''
+    fieldProps.className = className.split(' ').concat(additionalClassName).join(' ')
     return (
       <div className={`form-group ${wasValidate ? 'was-validated' : ''}`}>
         {React.createElement(component, fieldProps)}
@@ -84,7 +83,8 @@ ValidateField.propTypes = {
   component: PropTypes.string.isRequired,
   required: PropTypes.bool,
   type: PropTypes.string.isRequired,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  className: PropTypes.string
 }
 
 export default ValidateField

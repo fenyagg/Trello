@@ -1,5 +1,5 @@
 import React from 'react'
-import connect from 'react-redux/es/connect/connect'
+import { connect } from 'react-redux'
 import { login } from '../../../actions/user'
 import ValidateField from '../../ValidateField/index'
 import PropTypes from 'prop-types'
@@ -31,6 +31,7 @@ class AuthForm extends React.Component {
     return (
       <form className="form auth-form" onSubmit={this.onSubmit}>
         <ValidateField
+          data-field='email'
           component='input'
           type="text"
           className="form-control"
@@ -41,6 +42,7 @@ class AuthForm extends React.Component {
         />
 
         <ValidateField
+          data-field='password'
           component='input'
           type="password"
           className="form-control"
