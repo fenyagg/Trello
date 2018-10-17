@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REGISTER} from './../actions/user'
+import { USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './../actions/user'
 
 export const initialClearUserStore = {
   id: '',
