@@ -1,6 +1,6 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './../actions/user'
+import { USER_LOGIN, USER_LOGOUT, USER_REGISTER} from './../actions/user'
 
-const initialClearUserStore = {
+export const initialClearUserStore = {
   id: '',
   name: '',
   secondName: '',
@@ -9,7 +9,7 @@ const initialClearUserStore = {
   isAuthorized: false
 }
 
-const initialUserStore = {
+export const initialUserStore = {
   id: '1',
   name: 'Сильвестр',
   secondName: 'Сталоне',
