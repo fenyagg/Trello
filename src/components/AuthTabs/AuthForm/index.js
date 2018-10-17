@@ -31,7 +31,7 @@ class AuthForm extends React.Component {
     return (
       <form className="form auth-form" onSubmit={this.onSubmit}>
         <ValidateField
-          data-field='email'
+          data-field='email1'
           component='input'
           type="text"
           className="form-control"
