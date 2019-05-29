@@ -1,15 +1,31 @@
+import { clone } from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import { AppState } from "../../store";
+import { addColumn } from '../../store/column/actions'
+import AnimateComponent from '../AnimateComponent'
 import CardDetail from './CardDetail'
 import Column from './Column'
-import { clone } from 'lodash/lang'
-import AnimateComponent from '../AnimateComponent'
-import { addColumn } from '../../actions/columns'
 
-class Desc extends Component {
-  constructor (props) {
-    super(props)
+interface Props {
+  cardPopup: AppState['cardPopup'],
+  columns: AppState['columns'],
+  addColumn: typeof addColumn,
+}
+interface State {
+  openCardColumnIndex: number,
+  openCardIndex: number,
+  cardPopup: boolean,
+  draggedCardColumnIndex: number,
+  draggedCardIndex: number,
+  draggedColumn: number,
+}
+
+class Desc extends Component<Props, State> {
+  private lastAddedId: number|string = 0;
+
+  constructor (props: Props) {
+    super(props);
 
     this.state = {
       openCardColumnIndex: -1,
@@ -21,8 +37,6 @@ class Desc extends Component {
     }
   }
 
-  lastAddedId = 0
-
   cardDragAndDrop = {
     onDragEnd: () => {
       this.setState({
@@ -32,21 +46,21 @@ class Desc extends Component {
       })
     },
 
-    onDragEnter: (overColumnIndex, overCardIndex) => {
+    onDragEnter: (overColumnIndex: number, overCardIndex: number): void => {
       if (this.state.draggedCardColumnIndex === -1 ||
         this.state.draggedCardIndex === -1 ||
         (this.state.draggedCardColumnIndex === overColumnIndex &&
-          this.state.draggedCardIndex === overCardIndex)) return true
+          this.state.draggedCardIndex === overCardIndex)) { return true }
 
       this.cardDragAndDrop.changeCardPosition.call(this, overColumnIndex, overCardIndex)
     },
-    onDragStart: (columnIndex, cardIndex) => {
+    onDragStart: (columnIndex: number, cardIndex: number) => {
       this.setState({
         'draggedCardColumnIndex': columnIndex,
         'draggedCardIndex': cardIndex
       })
     },
-    onEnterColumn: (columnIndex, position) => {
+    onEnterColumn: (columnIndex: number, position: number) => {
       this.cardDragAndDrop.changeCardPosition.call(this, columnIndex, position)
     },
     changeCardPosition (newColumn, newIndex) {
@@ -54,18 +68,18 @@ class Desc extends Component {
         this.state.draggedCardIndex === -1) ||
         (this.state.draggedCardColumnIndex === newColumn &&
           this.state.draggedCardIndex === newIndex)
-      ) return
+      ) { return }
 
-      let cloneColumns = clone(this.state.columns)
+      let cloneColumns = clone(this.state.reducers)
 
-      newIndex = newIndex > cloneColumns[newColumn]['cards'].length - 1 ? cloneColumns[newColumn]['cards'].length - 1 : newIndex
+      newIndex = newIndex > cloneColumns[newColumn].cards.length - 1 ? cloneColumns[newColumn].cards.length - 1 : newIndex
       newIndex = newIndex < 0 ? 0 : newIndex
 
       // cut dragged card
-      let draggedCard = cloneColumns[this.state.draggedCardColumnIndex]['cards'].splice(this.state.draggedCardIndex, 1)[0]
+      let draggedCard = cloneColumns[this.state.draggedCardColumnIndex].cards.splice(this.state.draggedCardIndex, 1)[0]
 
       // put in new column
-      cloneColumns[newColumn]['cards'].splice(newIndex, 0, draggedCard)
+      cloneColumns[newColumn].cards.splice(newIndex, 0, draggedCard)
 
       this.setState({
         'draggedCardColumnIndex': newColumn,
@@ -88,16 +102,16 @@ class Desc extends Component {
     },
     onDragEnter: (overColumnIndex) => {
       if (this.state.draggedColumn === -1 ||
-        this.state.draggedColumn === overColumnIndex) return true
+        this.state.draggedColumn === overColumnIndex) { return true }
 
       // calc new index
       let newIndex = overColumnIndex // + posDiff;
-      newIndex = newIndex > this.state.columns.length - 1 ? this.state.columns.length - 1 : newIndex
+      newIndex = newIndex > this.state.reducers.length - 1 ? this.state.reducers.length - 1 : newIndex
       newIndex = newIndex < 0 ? 0 : newIndex
 
-      if (newIndex === this.state.draggedColumn) return true
+      if (newIndex === this.state.draggedColumn) { return true }
 
-      let cloneColumns = clone(this.state.columns)
+      let cloneColumns = clone(this.state.reducers)
 
       // cut dragged column
       let draggedColumn = cloneColumns.splice(this.state.draggedColumn, 1)[0]
@@ -113,7 +127,7 @@ class Desc extends Component {
     }
   };
 
-  addColumn () {
+  private addColumnHandler () {
     this.lastAddedId = 'column-' + (new Date().getTime())
     this.props.addColumn({
       name: 'Новая колонка',
@@ -157,8 +171,8 @@ class Desc extends Component {
             />
           })}
 
-          <a href="#0"
-            onClick={this.addColumn.bind(this)}
+          <a href="#"
+            onClick={() => this.addColumnHandler()}
             className="add-column-link">
             + Добавить еще 1 колонку
           </a>
@@ -168,26 +182,14 @@ class Desc extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state: AppState) {
   return {
     cardPopup: state.cardPopup,
     columns: state.columns
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    addColumn: (nextColumn) => dispatch(addColumn(nextColumn))
-  }
-}
-
-Desc.propTypes = {
-  cardPopup: PropTypes.object,
-  columns: PropTypes.array.isRequired,
-  addColumn: PropTypes.func.isRequired
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {addColumn}
 )(Desc)

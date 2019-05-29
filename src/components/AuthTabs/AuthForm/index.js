@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { login } from '../../../actions/user'
-import ValidateField from '../../ValidateField/index'
+import { login } from '../../../store/user/actions'
+import ValidateField from '../../ValidateField'
 import PropTypes from 'prop-types'
 
 class AuthForm extends React.Component {
@@ -12,8 +12,7 @@ class AuthForm extends React.Component {
     e.preventDefault()
 
     this.isFormValid = true
-    for (let fieldName in this.fields) {
-      const fieldComponent = this.fields[fieldName]
+    for (let fieldComponent of this.fields) {
       if (fieldComponent.isValid === false || !fieldComponent.validate()) {
         this.isFormValid = false
       }
@@ -21,8 +20,8 @@ class AuthForm extends React.Component {
 
     if (this.isFormValid) {
       this.props.login(
-        this.fields['email']['value'],
-        this.fields['password']['value']
+        this.fields.email.value,
+        this.fields.password.value
       )
     }
   }
@@ -38,7 +37,7 @@ class AuthForm extends React.Component {
           placeholder="Email"
           defaultValue=""
           validRules={['required', 'email']}
-          ref={field => (this.fields['email'] = field)}
+          ref={field => (this.fields.email = field)}
         />
 
         <ValidateField
@@ -52,7 +51,7 @@ class AuthForm extends React.Component {
             'required',
             { 'minLength': 6 }
           ]}
-          ref={field => (this.fields['password'] = field)}
+          ref={field => (this.fields.password = field)}
         />
 
         <button type="submit" className="btn btn-primary">Войти</button>

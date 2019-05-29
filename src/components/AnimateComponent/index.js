@@ -37,11 +37,11 @@ class AnimateComponent extends React.Component {
     } = this.props
 
     // no mount props changed
-    if (prevProps.isMounted === isMounted) return
+    if (prevProps.isMounted === isMounted) { return }
 
     // clear timeout
-    if (this.renderTimeOutId) clearTimeout(this.renderTimeOutId)
-    if (this.animationTimeOutId) clearTimeout(this.animationTimeOutId)
+    if (this.renderTimeOutId) { clearTimeout(this.renderTimeOutId) }
+    if (this.animationTimeOutId) { clearTimeout(this.animationTimeOutId) }
 
     if (isMounted) {
       // start mount animation

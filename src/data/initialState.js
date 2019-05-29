@@ -1,4 +1,4 @@
-import columns from './columns'
+import columns from '../store/column/data'
 
 export default {
   columns,

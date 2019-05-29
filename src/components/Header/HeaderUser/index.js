@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './style.css'
-import { logout } from '../../../actions/user'
+import { logout } from '../../../store/user/actions'
 import PropTypes from 'prop-types'
 
 class HeaderUser extends Component {
   render () {
-    const { name, secondName, logout } = this.props
+    const { name, secondName, logoutFn } = this.props
     return (
       <div className="header-user">
         <a href="#0" className="header-user__avatar"
@@ -16,7 +16,7 @@ class HeaderUser extends Component {
         <a href="#0" className="header-user__exit"
           onClick={e => {
             e.preventDefault()
-            logout()
+            logoutFn()
           }}>Выход</a>
       </div>
     )
@@ -32,14 +32,14 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(logout())
+    logoutFn: () => dispatch(logout())
   }
 }
 
 HeaderUser.propTypes = {
   name: PropTypes.string.isRequired,
   secondName: PropTypes.string.isRequired,
-  logout: PropTypes.func.isRequired
+  logoutFn: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderUser)

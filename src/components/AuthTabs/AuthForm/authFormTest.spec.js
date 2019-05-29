@@ -1,8 +1,8 @@
 import React from 'react'
 import configureStore from 'redux-mock-store'
 import AuthForm from './index'
-import { login } from '../../../actions/user'
-import { initialUserStore } from '../../../reducers/user'
+import { login } from '../../../store/user/actions'
+import { initialUserStore } from '../../../store/user/reducers'
 
 const mockStore = configureStore()
 
@@ -45,8 +45,7 @@ describe('Auth form', () => {
   describe('when submit', () => {
     it('should not call actions with no data', function () {
       wrapper.find('form').simulate('submit', {
-        preventDefault: () => {
-        }
+        preventDefault: () => { return true }
       })
       expect(store.getActions()).toHaveLength(0)
     })
@@ -62,8 +61,7 @@ describe('Auth form', () => {
       passwordInput.simulate('input')
 
       wrapper.find('form').simulate('submit', {
-        preventDefault: () => {
-        }
+        preventDefault: () => { return true }
       })
 
       const loginAction = login({ email: inputData.email, password: inputData.password })

@@ -1,6 +1,6 @@
 import React from 'react'
 import connect from 'react-redux/es/connect/connect'
-import { register } from '../../../actions/user'
+import { register } from '../../../store/user/actions'
 import PropTypes from 'prop-types'
 import ValidateField from '../../ValidateField'
 
@@ -12,8 +12,7 @@ class RegisterForm extends React.Component {
     e.preventDefault()
 
     this.isFormValid = true
-    for (let fieldName in this.fields) {
-      const fieldComponent = this.fields[fieldName]
+    for (let fieldComponent of this.fields) {
       if (fieldComponent.isValid === false || !fieldComponent.validate()) {
         this.isFormValid = false
       }
@@ -21,8 +20,8 @@ class RegisterForm extends React.Component {
 
     if (this.isFormValid) {
       this.props.register(
-        this.fields['email']['value'],
-        this.fields['password']['value']
+        this.fields.email.value,
+        this.fields.password.value
       )
     }
   }
@@ -36,8 +35,8 @@ class RegisterForm extends React.Component {
           className="form-control"
           placeholder="Email"
           defaultValue=""
-          validRules={['required', 'email']}
-          ref={field => (this.fields['email'] = field)}
+          validRules={[TypeValidatorRules.required, TypeValidatorRules.email]}
+          ref={field => (this.fields.email = field)}
         />
 
         <ValidateField
@@ -47,10 +46,10 @@ class RegisterForm extends React.Component {
           placeholder="Password"
           defaultValue=""
           validRules={[
-            'required',
-            { 'minLength': 6 }
+            TypeValidatorRules.required,
+            { [TypeValidatorRules.minLength]: 6 }
           ]}
-          ref={field => (this.fields['password'] = field)}
+          ref={field => (this.fields.password = field)}
         />
 
         <button type="submit" className="btn btn-primary">Регистрация</button>

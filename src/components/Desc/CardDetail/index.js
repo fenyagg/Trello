@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import './style.css'
-import { closeCardPopup as closeCardPopupAction } from '../../../actions/cardPopup'
-import { saveCard } from '../../../actions/columns'
+import { closeCardPopup as closeCardPopupAction } from '../../../store/cardPopup/actions'
+import { saveCard } from '../../../store/column/actions'
 import PropTypes from 'prop-types'
 
 class CardDetail extends React.Component {
@@ -37,12 +37,12 @@ class CardDetail extends React.Component {
   saveCard = (e) => {
     e.preventDefault()
     const { columns, closeCardPopup, columnIndex, cardIndex } = this.props
-    const card = columns[columnIndex]['cards'][cardIndex]
+    const card = columns[columnIndex].cards[cardIndex]
     const nextCard = {
       'title': this.titleInput.current.value,
       'text': this.descriptionInput.current.value
     }
-    if (!card || !card.id) nextCard.id = 'card-' + (new Date().getTime())
+    if (!card || !card.id) { nextCard.id = 'card-' + (new Date().getTime()) }
     this.props.saveCardToStore(columnIndex, cardIndex, nextCard)
     closeCardPopup()
   }
@@ -52,7 +52,7 @@ class CardDetail extends React.Component {
     const card = Object.assign({
       'title': 'Новая задача',
       'text': ''
-    }, columns[columnIndex]['cards'][cardIndex])
+    }, columns[columnIndex].cards[cardIndex])
 
     return (
       <div className="popup-wrapper">
@@ -99,7 +99,7 @@ class CardDetail extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    columns: state.columns,
+    columns: state.reducers,
     columnIndex: state.cardPopup.columnIndex,
     cardIndex: state.cardPopup.cardIndex
   }

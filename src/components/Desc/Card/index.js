@@ -1,17 +1,17 @@
 import React from 'react'
 import './style.css'
-import { openCardPopup } from '../../../actions/cardPopup'
+import { openCardPopup } from '../../../store/cardPopup/actions'
 import connect from 'react-redux/es/connect/connect'
-import { endDraggingCard, startDraggingCard } from '../../../actions/dndCard'
+import { endDraggingCard, startDraggingCard } from '../../../store/dndCard/actions'
 import PropTypes from 'prop-types'
-import { swapCards } from '../../../actions/columns'
+import { swapCards } from '../../../store/column/actions'
 
 class Cards extends React.PureComponent {
   onDragEnter (e) {
-    const { card, dndCard, swapCards } = this.props
+    const { card, dndCard, swapCardsFunction } = this.props
 
-    if (!dndCard.isDragging || dndCard.cardId === card.id) return
-    swapCards(dndCard.cardId, card.id)
+    if (!dndCard.isDragging || dndCard.cardId === card.id) { return }
+    swapCardsFunction(dndCard.cardId, card.id)
   }
 
   render () {
@@ -19,27 +19,27 @@ class Cards extends React.PureComponent {
       card,
       dndCard,
 
-      startDraggingCard,
-      endDraggingCard,
-      openCardPopup
+      startDraggingCardFunction,
+      endDraggingCardFunction,
+      openCardPopupFunction
     } = this.props
 
     const cardClass = ['card-container']
 
     const isDraggable = dndCard.isDragging && card.id === dndCard.cardId
 
-    if (isDraggable) cardClass.push('_dragging')
+    if (isDraggable) { cardClass.push('_dragging') }
 
     return (
       <article
         className={cardClass.join(' ')}
         onDragEnter={e => this.onDragEnter(e)}
-        onClick={openCardPopup.bind(this)}
-        onDrop={endDraggingCard}
+        onClick={openCardPopupFunction.bind(this)}
+        onDrop={endDraggingCardFunction}
       >
         <div className="card"
-          onDragStart={() => startDraggingCard(card.id)}
-          onDragEnd={endDraggingCard}
+          onDragStart={() => startDraggingCardFunction(card.id)}
+          onDragEnd={endDraggingCardFunction}
           draggable="true"
         >
           <div className="card-title">{card.title}</div>
@@ -51,30 +51,30 @@ class Cards extends React.PureComponent {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    card: state.columns[ownProps.columnIndex]['cards'][ownProps.cardIndex],
+    card: state.reducers[ownProps.columnIndex].cards[ownProps.cardIndex],
     dndCard: state.dndCard
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    openCardPopup: () => dispatch(openCardPopup(
+    openCardPopupFunction: () => dispatch(openCardPopup(
       ownProps.columnIndex,
       ownProps.cardIndex
     )),
-    startDraggingCard: (cardId) => dispatch(startDraggingCard(cardId)),
-    endDraggingCard: () => dispatch(endDraggingCard()),
-    swapCards: (draggingCardId, overCardId) => dispatch(swapCards(draggingCardId, overCardId))
+    startDraggingCardFunction: (cardId) => dispatch(startDraggingCard(cardId)),
+    endDraggingCardFunction: () => dispatch(endDraggingCard()),
+    swapCardsFunction: (draggingCardId, overCardId) => dispatch(swapCards(draggingCardId, overCardId))
   }
 }
 
 Cards.propTypes = {
   card: PropTypes.object.isRequired,
   dndCard: PropTypes.object.isRequired,
-  openCardPopup: PropTypes.func.isRequired,
-  startDraggingCard: PropTypes.func.isRequired,
-  endDraggingCard: PropTypes.func.isRequired,
-  swapCards: PropTypes.func.isRequired
+  openCardPopupFunction: PropTypes.func.isRequired,
+  startDraggingCardFunction: PropTypes.func.isRequired,
+  endDraggingCardFunction: PropTypes.func.isRequired,
+  swapCardsFunction: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cards)
